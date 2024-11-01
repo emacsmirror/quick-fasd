@@ -1,4 +1,4 @@
-;;; quick-fasd.el --- Emacs integration for the command-line productivity booster `fasd'
+;;; quick-fasd.el --- Emacs integration for the command-line productivity booster `fasd' -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2014 James Cherti
 ;; Copyright (C) 2013 steckerhalter
@@ -29,7 +29,7 @@
 ;;; Code:
 
 (defgroup quick-fasd nil
-  "Navigate previously-visited files and directories easily"
+  "Navigate previously-visited files and directories easily."
   :group 'tools
   :group 'convenience)
 
@@ -40,7 +40,7 @@ When set to nil, all fasd results are returned for completion"
   :type 'boolean)
 
 (defcustom quick-fasd-file-manager 'dired
-  "A default set of file managers to use with `quick-fasd-find-file'"
+  "A default set of file managers to use with `quick-fasd-find-file'."
   :type '(radio
           (const :tag "Use `dired', default emacs file manager" dired)
           (const :tag "Use `deer', ranger's file manager" deer)
@@ -67,14 +67,9 @@ to specify multiple flags separate them by spaces, e.g. `-a -r'"
           (find-file file))
       (message "Directory or file `%s' doesn't exist" file)))
 
-(when (featurep 'ivy)
-  (ivy-set-actions
-   'quick-fasd-find-file
-   '(("o" quick-fasd-find-file-action "find-file"))))
-
 ;;;###autoload
 (defun quick-fasd-find-file (prefix &optional query)
-  "Use fasd to open a file, or a directory with dired.
+  "Use fasd to open a file, or a directory with `dired'.
 If PREFIX is positive consider only directories.
 If PREFIX is -1 consider only files.
 If PREFIX is nil consider files and directories.
@@ -104,8 +99,7 @@ QUERY can be passed optionally to avoid the prompt."
                    (completing-read prompt results nil t))))
       (if (not file)
           (message "Fasd found nothing for query `%s'" query)
-        (unless (featurep 'ivy)
-          (quick-fasd-find-file-action file))))))
+        (quick-fasd-find-file-action file)))))
 
 ;;;###autoload
 (defun quick-fasd-add-file-to-db ()
@@ -123,9 +117,9 @@ QUERY can be passed optionally to avoid the prompt."
 ;;;###autoload
 (define-minor-mode global-quick-fasd-mode
   "Toggle fasd mode globally.
-   With no argument, this command toggles the mode.
-   Non-null prefix argument turns on the mode.
-   Null prefix argument turns off the mode."
+With no argument, this command toggles the mode.
+Non-null prefix argument turns on the mode.
+Null prefix argument turns off the mode."
   :global t
   :group 'quick-fasd
 
