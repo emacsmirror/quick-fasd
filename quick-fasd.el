@@ -58,14 +58,14 @@ Fasd has the following options:
 to specify multiple flags separate them by spaces, e.g. `-a -r'"
   :type 'string)
 
-  (defun quick-fasd-find-file-action (file)
-    (if (file-readable-p file)
-        (if (file-directory-p file)
-            (if (fboundp 'counsel-find-file)
-                (counsel-find-file file)
-              (funcall quick-fasd-file-manager file))
-          (find-file file))
-      (message "Directory or file `%s' doesn't exist" file)))
+(defun quick-fasd-find-file-action (file)
+  (if (file-readable-p file)
+      (if (file-directory-p file)
+          (if (fboundp 'counsel-find-file)
+              (counsel-find-file file)
+            (funcall quick-fasd-file-manager file))
+        (find-file file))
+    (message "Directory or file `%s' doesn't exist" file)))
 
 ;;;###autoload
 (defun quick-fasd-find-file (&optional query)
@@ -73,7 +73,8 @@ to specify multiple flags separate them by spaces, e.g. `-a -r'"
 QUERY can be passed optionally to avoid the prompt."
   (interactive "P")
   (if (not (executable-find "fasd"))
-      (error "Fasd executable cannot be found.  It is required by `quick-fasd.el'.  Cannot use `quick-fasd-find-file'")
+      (error (concat "Fasd executable cannot be found.  It is required by "
+                     "`quick-fasd.el'.  Cannot use `quick-fasd-find-file'"))
     (unless query (setq query (if quick-fasd-enable-initial-prompt
                                   (read-from-minibuffer "Fasd query: ")
                                 "")))
@@ -86,9 +87,9 @@ QUERY can be passed optionally to avoid the prompt."
                       query))
              "\n" t))
            (file (when results
-                   ;; set `this-command' to `quick-fasd-find-file' is required because
-                   ;; `read-from-minibuffer' modifies its value, while `ivy-completing-read'
-                   ;; assumes it to be its caller
+                   ;; set `this-command' to `quick-fasd-find-file' is required
+                   ;; because `read-from-minibuffer' modifies its value, while
+                   ;; `ivy-completing-read' assumes it to be its caller
                    (setq this-command 'quick-fasd-find-file)
                    (completing-read prompt results nil t))))
       (if (not file)
@@ -99,7 +100,9 @@ QUERY can be passed optionally to avoid the prompt."
 (defun quick-fasd-add-file-to-db ()
   "Add current file or directory to the Fasd database."
   (if (not (executable-find "fasd"))
-      (message "Fasd executable cannot be found. It is required by `quick-fasd.el'. Cannot add file/directory to the fasd db")
+      (message (concat "Fasd executable cannot be found. It is required "
+                       "by `quick-fasd.el'. Cannot add file/directory to the "
+                       "fasd db"))
     (let ((file (if (string= major-mode "dired-mode")
                     dired-directory
                   (buffer-file-name))))
