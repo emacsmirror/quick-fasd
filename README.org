@@ -30,16 +30,16 @@ Example recipe for el-get:
        :url "https://github.com/jamescherti/quick-fasd.el"
        :postinit (progn
                    (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
-                   (global-quick-fasd-mode 1)))
+                   (quick-fasd-mode 1)))
 #+END_SRC
 
 *** Usage
 
-Add a shortcut key for =quick-fasd-find-file= and enable the =global-quick-fasd-mode= which makes sure that opening files or directories in Emacs updates the fasd database.
+Add a shortcut key for =quick-fasd-find-file= and enable the =quick-fasd-mode= which makes sure that opening files or directories in Emacs updates the fasd database.
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
-  (global-quick-fasd-mode 1)
+  (quick-fasd-mode 1)
 #+END_SRC
 
 Calling =quick-fasd-find-file= with a prefix argument of

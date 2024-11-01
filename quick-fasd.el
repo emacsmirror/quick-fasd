@@ -21,7 +21,7 @@
 ;;
 ;; Usage:
 ;; (require 'quick-fasd)
-;; (global-quick-fasd-mode 1)
+;; (quick-fasd-mode 1)
 ;;
 ;; Optionally bind `quick-fasd-find-file' to a key:
 ;; (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
@@ -112,7 +112,7 @@ QUERY can be passed optionally to avoid the prompt."
         (start-process "*fasd*" nil "fasd" "--add" file)))))
 
 ;;;###autoload
-(define-minor-mode global-quick-fasd-mode
+(define-minor-mode quick-fasd-mode
   "Toggle fasd mode globally.
 With no argument, this command toggles the mode.
 Non-null prefix argument turns on the mode.
@@ -120,7 +120,7 @@ Null prefix argument turns off the mode."
   :global t
   :group 'quick-fasd
 
-  (if global-quick-fasd-mode
+  (if quick-fasd-mode
       (progn (add-hook 'find-file-hook 'quick-fasd-add-file-to-db)
              (add-hook 'dired-mode-hook 'quick-fasd-add-file-to-db))
     (remove-hook 'find-file-hook 'quick-fasd-add-file-to-db)
