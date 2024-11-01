@@ -100,10 +100,10 @@ Optionally pass QUERY to avoid prompt."
   (let ((file (if (string= major-mode "dired-mode")
                   dired-directory
                 (buffer-file-name (buffer-base-buffer))))
-    (when (and file
-               (stringp file)
-               (file-readable-p file))
-      (start-process "*fasd*" nil "fasd" "--add" file))))
+        (when (and file
+                   (stringp file)
+                   (file-readable-p file))
+          (start-process "*fasd*" nil "fasd" "--add" file)))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
