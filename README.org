@@ -1,4 +1,4 @@
-* emacs-fasd
+* quick-fasd.el
 
 An Emacs extension to integrate [[https://github.com/clvv/fasd][Fasd]]:
 
@@ -8,10 +8,7 @@ Fasd (pronounced similar to "fast") is a command-line productivity booster. Fasd
 
 *** Prerequisites
 
-- fasd
-
-  https://github.com/clvv/fasd
-
+- fasd https://github.com/clvv/fasd
 
 *** Installation
 
@@ -20,7 +17,7 @@ Fasd (pronounced similar to "fast") is a command-line productivity booster. Fasd
 =quelpa= is at https://github.com/quelpa/quelpa
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(fasd :repo "steckerhalter/emacs-fasd" :fetcher github))
+(quelpa '(fasd :repo "jamescherti/quick-fasd.el" :fetcher github))
 #+END_SRC
 
 Since the recipe is stored in melpa this also works:
@@ -31,21 +28,6 @@ Since the recipe is stored in melpa this also works:
 
 Interactively: =M-x quelpa fasd RET=.
 
-**** MELPA
-
-You can install =fasd.el= using the packages on [[http://melpa.milkbox.net/][Melpa]].
-
-Make sure you have something like the following in your Emacs startup file (=~/.emacs.d/init.el=, or =~/.emacs=):
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
-#+END_SRC
-
-To make that take effect, either evaluate that elisp expression or restart Emacs.
-
-Then use M-x package-list-packages, select =fasd= from the list by pressing i, then press x to execute the changes. At that point, the package will be installed.
-
 **** El-Get
 
 Example recipe for el-get:
@@ -53,8 +35,7 @@ Example recipe for el-get:
 #+BEGIN_SRC emacs-lisp
 (:name fasd
        :type github
-       :url "https://github.com/steckerhalter/emacs-fasd"
-       :depends (grizzl)
+       :url "https://github.com/jamescherti/quick-fasd.el"
        :postinit (progn
                    (global-set-key (kbd "C-h C-/") 'fasd-find-file)
                    (global-fasd-mode 1)))
@@ -88,7 +69,7 @@ Usually =fasd= will prompt for a initial query. To turn that off and get all res
 
 ***** Completion Function
 
-By default the standard =completing-read-function= will be used, which could be using =helm= or =ido= depending on what you are using. To use e.g. =ido= explicitly set it to =ido-completing-read=. Previously the default was =grizzl-completing-read= but the dependency on =grizzl= has been removed. If you still want to use =grizzl=, you need to install the package and set the =completing-read-function= accordingly.
+By default the standard =completing-read-function= will be used, which could be using =helm= or =ido= depending on what you are using.
 
 ***** Standard search
 
