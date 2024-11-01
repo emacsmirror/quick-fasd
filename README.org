@@ -5,25 +5,18 @@ An Emacs package to integrate Fasd.
 Fasd is a command-line productivity booster that offers quick access to files and directories for POSIX shells. It is inspired by tools like autojump, z and v. Fasd keeps track of files and directories you have accessed, so that you can quickly reference them in the command line.
 
 *** Prerequisites
-
-- fasd: https://github.com/clvv/fasd
+- [[https://github.com/clvv/fasd][fasd]]
 
 *** Installation
-
 **** quelpa
-
-=quelpa= is at https://github.com/quelpa/quelpa
-
 #+BEGIN_SRC emacs-lisp
 (quelpa '(quick-fasd :repo "jamescherti/quick-fasd.el" :fetcher github))
 #+END_SRC
 
-Interactively: =M-x quelpa fasd RET=.
+(Interactively: =M-x quelpa fasd RET=.)
 
 **** El-Get
-
 Example recipe for el-get:
-
 #+BEGIN_SRC emacs-lisp
 (:name quick-fasd
        :type github
@@ -34,9 +27,7 @@ Example recipe for el-get:
 #+END_SRC
 
 *** Usage
-
 Add a shortcut key for =quick-fasd-find-file= and enable the =quick-fasd-mode= which makes sure that opening files or directories in Emacs updates the fasd database.
-
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
   (quick-fasd-mode 1)
@@ -50,7 +41,6 @@ Calling =quick-fasd-find-file= with a prefix argument of
 With no prefix it shows files and directories.
 
 **** Options
-
 Use the customize interface:
 
 =M-x customize-group RET fasd RET=
@@ -66,3 +56,6 @@ By default the standard =completing-read-function= will be used, which could be 
 ***** Standard search
 
 By default the =fasd= search parameter is =-a= which searches files and directories, you can customize this with the =quick-fasd-standard-search= option.
+
+*** Links
+- [[https://github.com/jamescherti/quick-fasd.el][quick-fasd.el @GitHub]]

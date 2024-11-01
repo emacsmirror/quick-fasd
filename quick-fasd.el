@@ -5,7 +5,7 @@
 
 ;; Maintainer: James Cherti
 ;; Original Author: steckerhalter
-;; URL: https://github.com/jamescherti/quick-quick-fasd.el
+;; URL: https://github.com/jamescherti/quick-fasd.el
 ;; Keywords: cli bash zsh autojump
 
 ;;; Commentary:
@@ -56,10 +56,10 @@ Available options:
 Multiple flags can be specified with spaces, e.g., \"-a -r\"."
   :type 'string)
 
-(defun quick-fasd--get-fasd-path ()
+(defun quick-fasd--check-fasd-executable ()
   "Return the path to the `fasd` executable or signal an error if not found."
   (or (executable-find "fasd")
-      (error "Fasd executable not found; required for `quick-fasd.el'")))
+      (error "Fasd executable not found; required for `quick-fasd'")))
 
 (defun quick-fasd-find-file-action (file)
   "Open FILE with appropriate file manager or prompt if unreadable."
@@ -74,7 +74,7 @@ Multiple flags can be specified with spaces, e.g., \"-a -r\"."
   "Use fasd to open a file or directory.
 Optionally pass QUERY to avoid prompt."
   (interactive "P")
-  (quick-fasd--get-fasd-path)
+  (quick-fasd--check-fasd-executable)
   (unless query (setq query (if quick-fasd-enable-initial-prompt
                                 (read-from-minibuffer "Fasd query: ")
                               "")))
@@ -96,7 +96,7 @@ Optionally pass QUERY to avoid prompt."
 ;;;###autoload
 (defun quick-fasd-add-file-to-db ()
   "Add current file or directory to the Fasd database."
-  (quick-fasd--get-fasd-path)
+  (quick-fasd--check-fasd-executable)
   (let ((file (if (string= major-mode "dired-mode")
                   dired-directory
                 (buffer-file-name (buffer-base-buffer))))
