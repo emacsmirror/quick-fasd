@@ -56,10 +56,15 @@ Available options:
 Multiple flags can be specified with spaces, e.g., \"-a -r\"."
   :type 'string)
 
+(defvar quick-fasd--executable-path nil
+  "Cached path to the `fasd` executable, or nil if not found.")
+
 (defun quick-fasd--check-fasd-executable ()
   "Return the path to the `fasd` executable or signal an error if not found."
-  (or (executable-find "fasd")
-      (error "Fasd executable not found; required for `quick-fasd'")))
+  (unless quick-fasd--executable-path
+    (setq quick-fasd--executable-path (executable-find "fasd"))
+    (unless quick-fasd--executable-path
+      (error "Fasd executable not found; required for `quick-fasd'"))))
 
 (defun quick-fasd-find-file-action (file)
   "Open FILE with appropriate file manager or prompt if unreadable."
@@ -97,13 +102,13 @@ Optionally pass QUERY to avoid prompt."
 (defun quick-fasd-add-file-to-db ()
   "Add current file or directory to the Fasd database."
   (quick-fasd--check-fasd-executable)
-  (let ((file (if (string= major-mode "dired-mode")
+  (let ((file (if (eq major-mode 'dired-mode)
                   dired-directory
                 (buffer-file-name (buffer-base-buffer)))))
     (when (and file
-                   (stringp file)
-                   (file-readable-p file))
-          (start-process "*fasd*" nil "fasd" "--add" file))))
+               (stringp file)
+               (file-readable-p file))
+      (start-process "*fasd*" nil "fasd" "--add" file))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
@@ -112,10 +117,10 @@ Optionally pass QUERY to avoid prompt."
   :group 'quick-fasd
 
   (if quick-fasd-mode
-      (progn (add-hook 'find-file-hook 'quick-fasd-add-file-to-db)
-             (add-hook 'dired-mode-hook 'quick-fasd-add-file-to-db))
-    (remove-hook 'find-file-hook 'quick-fasd-add-file-to-db)
-    (remove-hook 'dired-mode-hook 'quick-fasd-add-file-to-db)))
+      (progn (add-hook 'find-file-hook #'quick-fasd-add-file-to-db)
+             (add-hook 'dired-mode-hook #'quick-fasd-add-file-to-db))
+    (remove-hook 'find-file-hook #'quick-fasd-add-file-to-db)
+    (remove-hook 'dired-mode-hook #'quick-fasd-add-file-to-db)))
 
 (provide 'quick-fasd)
 ;;; quick-fasd.el ends here
