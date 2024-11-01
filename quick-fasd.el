@@ -35,81 +35,75 @@
 
 (defcustom quick-fasd-enable-initial-prompt t
   "Specify whether to enable prompt for the initial query.
-
-When set to nil, all fasd results are returned for completion"
+When set to nil, all fasd results are returned for completion."
   :type 'boolean)
 
 (defcustom quick-fasd-file-manager 'dired
-  "A default set of file managers to use with `quick-fasd-find-file'."
+  "Default file manager used by `quick-fasd-find-file-action'."
   :type '(radio
-          (const :tag "Use `dired', default emacs file manager" dired)
-          (const :tag "Use `deer', ranger's file manager" deer)
-          (function :tag "Custom predicate")))
+          (const :tag "Dired, the default Emacs file manager" dired)
+          (const :tag "Deer, Ranger's file manager" deer)
+          (function :tag "Custom file manager function")))
 
 (defcustom quick-fasd-standard-search "-a"
-  "`fasd' standard search parameter.
-This parameter is overridden by PREFIX given to `quick-fasd-find-file'
-Fasd has the following options:
-`-a' match files and directories
-`-d' match directories only
-`-f' match files only
-`-r' match by rank only
-`-t' match by recent access only
-to specify multiple flags separate them by spaces, e.g. `-a -r'"
+  "Standard search parameter for `fasd'.
+Available options:
+- `-a': Match files and directories
+- `-d': Match directories only
+- `-f': Match files only
+- `-r': Match by rank only
+- `-t': Match by recent access only
+Multiple flags can be specified with spaces, e.g., \"-a -r\"."
   :type 'string)
 
+(defun quick-fasd--get-fasd-path ()
+  "Return the path to the `fasd` executable or signal an error if not found."
+  (or (executable-find "fasd")
+      (error "Fasd executable not found; required for `quick-fasd.el'")))
+
 (defun quick-fasd-find-file-action (file)
+  "Open FILE with appropriate file manager or prompt if unreadable."
   (if (file-readable-p file)
       (if (file-directory-p file)
-          (if (fboundp 'counsel-find-file)
-              (counsel-find-file file)
-            (funcall quick-fasd-file-manager file))
+          (funcall quick-fasd-file-manager file)
         (find-file file))
     (message "Directory or file `%s' doesn't exist" file)))
 
 ;;;###autoload
 (defun quick-fasd-find-file (&optional query)
-  "Use fasd to open a file, or a directory with `dired'.
-QUERY can be passed optionally to avoid the prompt."
+  "Use fasd to open a file or directory.
+Optionally pass QUERY to avoid prompt."
   (interactive "P")
-  (if (not (executable-find "fasd"))
-      (error (concat "Fasd executable cannot be found.  It is required by "
-                     "`quick-fasd.el'.  Cannot use `quick-fasd-find-file'"))
-    (unless query (setq query (if quick-fasd-enable-initial-prompt
-                                  (read-from-minibuffer "Fasd query: ")
-                                "")))
-    (let* ((prompt "Fasd query: ")
-           (results
-            (split-string
-             (shell-command-to-string
-              (concat "fasd -l -R"
-                      (concat " " quick-fasd-standard-search " ")
-                      query))
-             "\n" t))
-           (file (when results
-                   ;; set `this-command' to `quick-fasd-find-file' is required
-                   ;; because `read-from-minibuffer' modifies its value, while
-                   ;; `ivy-completing-read' assumes it to be its caller
-                   (setq this-command 'quick-fasd-find-file)
-                   (completing-read prompt results nil t))))
-      (if (not file)
-          (message "Fasd found nothing for query `%s'" query)
-        (quick-fasd-find-file-action file)))))
+  (quick-fasd--get-fasd-path)
+  (unless query (setq query (if quick-fasd-enable-initial-prompt
+                                (read-from-minibuffer "Fasd query: ")
+                              "")))
+  (let* ((prompt "Fasd query: ")
+         (results
+          (split-string
+           (shell-command-to-string
+            (concat "fasd -l -R"
+                    (concat " " quick-fasd-standard-search " ")
+                    query))
+           "\n" t))
+         (file (when results
+                 (setq this-command 'quick-fasd-find-file)
+                 (completing-read prompt results nil t))))
+    (if (not file)
+        (message "Fasd found nothing for query `%s'" query)
+      (quick-fasd-find-file-action file))))
 
 ;;;###autoload
 (defun quick-fasd-add-file-to-db ()
   "Add current file or directory to the Fasd database."
-  (if (not (executable-find "fasd"))
-      (message (concat "Fasd executable cannot be found. It is required "
-                       "by `quick-fasd.el'. Cannot add file/directory to the "
-                       "fasd db"))
-    (let ((file (if (string= major-mode "dired-mode")
-                    dired-directory
-                  (buffer-file-name))))
-      (when (and file
-                 (stringp file)
-                 (file-readable-p file))
-        (start-process "*fasd*" nil "fasd" "--add" file)))))
+  (quick-fasd--get-fasd-path)
+  (let ((file (if (string= major-mode "dired-mode")
+                  dired-directory
+                (buffer-file-name))))
+    (when (and file
+               (stringp file)
+               (file-readable-p file))
+      (start-process "*fasd*" nil "fasd" "--add" file))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
