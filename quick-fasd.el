@@ -99,7 +99,7 @@ Optionally pass QUERY to avoid prompt."
   (quick-fasd--get-fasd-path)
   (let ((file (if (string= major-mode "dired-mode")
                   dired-directory
-                (buffer-file-name))))
+                (buffer-file-name (buffer-base-buffer))))
     (when (and file
                (stringp file)
                (file-readable-p file))
@@ -107,10 +107,7 @@ Optionally pass QUERY to avoid prompt."
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
-  "Toggle fasd mode globally.
-With no argument, this command toggles the mode.
-Non-null prefix argument turns on the mode.
-Null prefix argument turns off the mode."
+  "Toggle fasd mode globally."
   :global t
   :group 'quick-fasd
 
