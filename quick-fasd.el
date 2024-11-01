@@ -68,11 +68,8 @@ to specify multiple flags separate them by spaces, e.g. `-a -r'"
       (message "Directory or file `%s' doesn't exist" file)))
 
 ;;;###autoload
-(defun quick-fasd-find-file (prefix &optional query)
+(defun quick-fasd-find-file (&optional query)
   "Use fasd to open a file, or a directory with `dired'.
-If PREFIX is positive consider only directories.
-If PREFIX is -1 consider only files.
-If PREFIX is nil consider files and directories.
 QUERY can be passed optionally to avoid the prompt."
   (interactive "P")
   (if (not (executable-find "fasd"))
@@ -85,10 +82,7 @@ QUERY can be passed optionally to avoid the prompt."
             (split-string
              (shell-command-to-string
               (concat "fasd -l -R"
-                      (pcase (prefix-numeric-value prefix)
-                        (`-1 " -f ")
-                        ((pred (< 1)) " -d ")
-                        (_ (concat " " quick-fasd-standard-search " ")))
+                      (concat " " quick-fasd-standard-search " ")
                       query))
              "\n" t))
            (file (when results
