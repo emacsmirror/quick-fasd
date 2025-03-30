@@ -68,8 +68,8 @@ doom sync
 
 ## Usage
 
-Add a shortcut key for `quick-fasd-find-file`{.verbatim} and enable the
-`quick-fasd-mode`{.verbatim} which makes sure that opening files or
+Add a shortcut key for `quick-fasd-find-file` and enable the
+`quick-fasd-mode` which makes sure that opening files or
 directories in Emacs updates the fasd database.
 
 ``` {.commonlisp org-language="emacs-lisp"}
@@ -77,10 +77,10 @@ directories in Emacs updates the fasd database.
 (quick-fasd-mode 1)
 ```
 
-Calling `quick-fasd-find-file`{.verbatim} with a prefix argument of
+Calling `quick-fasd-find-file` with a prefix argument of
 
--   `C-u`{.verbatim} lists only directories
--   `M--`{.verbatim} lists only files
+-   `C-u` lists only directories
+-   `M--` lists only files
 
 With no prefix it shows files and directories.
 
@@ -88,26 +88,26 @@ With no prefix it shows files and directories.
 
     Use the customize interface:
 
-    `M-x customize-group RET fasd RET`{.verbatim}
+    `M-x customize-group RET fasd RET`
 
     1.  Initial Prompt
 
-        Usually `fasd`{.verbatim} will prompt for a initial query. To
+        Usually `fasd` will prompt for a initial query. To
         turn that off and get all results directly, set
-        `quick-fasd-enable-initial-prompt`{.verbatim} to
-        `nil`{.verbatim}.
+        `quick-fasd-enable-initial-prompt` to
+        `nil`.
 
     2.  Completion Function
 
-        By default the standard `completing-read-function`{.verbatim}
-        will be used, which could be using `helm`{.verbatim} or
-        `ido`{.verbatim} depending on what you are using.
+        By default the standard `completing-read-function`
+        will be used, which could be using `helm` or
+        `ido` depending on what you are using.
 
     3.  Standard search
 
-        By default the `fasd`{.verbatim} search parameter is
-        `-a`{.verbatim} which searches files and directories, you can
-        customize this with the `quick-fasd-standard-search`{.verbatim}
+        By default the `fasd` search parameter is
+        `-a` which searches files and directories, you can
+        customize this with the `quick-fasd-standard-search`
         option.
 
 ## Author and License
