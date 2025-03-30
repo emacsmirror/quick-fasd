@@ -1,4 +1,4 @@
-# quick-fasd.el
+# quick-fasd.el - Easily navigate your file system directly within Emacs by using Fasd
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
 ![](https://raw.githubusercontent.com/jamescherti/quick-fasd.el/main/.images/made-for-gnu-emacs.svg)
 
