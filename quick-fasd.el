@@ -1,12 +1,28 @@
-;;; quick-fasd.el --- Emacs integration for the command-line productivity booster `fasd' -*- lexical-binding: t; -*-
+;;; quick-fasd.el --- Emacs integration for the command-line tool `fasd' -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024-2025 James Cherti
 ;; Copyright (C) 2013-2021 steckerhalter
 
 ;; Maintainer: James Cherti
 ;; Original Author: steckerhalter
+;; Version: 0.9.9
 ;; URL: https://github.com/jamescherti/quick-fasd.el
 ;; Keywords: cli bash zsh autojump
+;; Package-Requires: ((emacs "25.1"))
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 ;; The quick-fasd Emacs package integrates the Fasd tool within the Emacs
@@ -20,21 +36,6 @@
 ;; system directly within Emacs by using Fasd’s fast-access capabilities. For
 ;; example, you can open recently accessed files or quickly jump to frequently
 ;; used directories without leaving the Emacs environment.
-;;
-;; How does it work?
-;; - Hooks into to `find-file-hook' to add all visited files and directories to
-;;   `fasd'.
-;; - Provides the function `quick-fasd-find-file' to prompt and fuzzy complete
-;;   available candidates
-;;
-;; Requirements:
-;;   - `fasd' command line tool, see: https://github.com/clvv/fasd
-;;
-;; Usage:
-;;   (quick-fasd-mode 1)
-;;
-;; Optionally bind `quick-fasd-find-file' to a key:
-;;   (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
 
 ;;; Code:
 
