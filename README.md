@@ -12,7 +12,7 @@ Here’s how the package works:
 
 ## Requirements
 
-- The `fasd` command line tool, see: https://github.com/clvv/fasd
+- The [fasd](https://github.com/clvv/fasd) command line tool.
 
 ## Installation
 
