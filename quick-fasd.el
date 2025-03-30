@@ -9,22 +9,32 @@
 ;; Keywords: cli bash zsh autojump
 
 ;;; Commentary:
-;; An Emacs extension to integrate Fasd.
+;; The quick-fasd Emacs package integrates the Fasd tool within the Emacs
+;; environment. Fasd, a command-line utility, enhances the productivity of users
+;; by providing fast access to frequently used files and directories. Inspired
+;; by tools such as autojump, z, and v, Fasd functions by maintaining a dynamic
+;; index of files and directories you access, allowing you to reference them
+;; quickly from the command line.
 ;;
+;; After installing quick-fasd in Emacs, you can easily navigate your file
+;; system directly within Emacs by using Fasd’s fast-access capabilities. For
+;; example, you can open recently accessed files or quickly jump to frequently
+;; used directories without leaving the Emacs environment.
+;;
+;; How does it work?
 ;; - Hooks into to `find-file-hook' to add all visited files and directories to
 ;;   `fasd'.
-;; - Adds the function `quick-fasd-find-file' to prompt and fuzzy complete
+;; - Provides the function `quick-fasd-find-file' to prompt and fuzzy complete
 ;;   available candidates
 ;;
 ;; Requirements:
-;; - `fasd' command line tool, see: https://github.com/clvv/fasd
+;;   - `fasd' command line tool, see: https://github.com/clvv/fasd
 ;;
 ;; Usage:
-;; (require 'quick-fasd)
-;; (quick-fasd-mode 1)
+;;   (quick-fasd-mode 1)
 ;;
 ;; Optionally bind `quick-fasd-find-file' to a key:
-;; (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
+;;   (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
 
 ;;; Code:
 
