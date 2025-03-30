@@ -2,9 +2,9 @@
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
 ![](https://raw.githubusercontent.com/jamescherti/quick-fasd.el/main/.images/made-for-gnu-emacs.svg)
 
-The **quick-fasd** Emacs package integrates the Fasd tool within the Emacs environment. Fasd, a command-line utility, enhances the productivity of users by providing fast access to frequently used files and directories. Inspired by tools such as autojump, z, and v, Fasd functions by maintaining a dynamic index of files and directories you access, allowing you to reference them quickly from the command line.
+The **quick-fasd** Emacs package integrates the Fasd tool within the Emacs environment. Fasd, a command-line utility, enhances the productivity of users by providing fast access to frequently used files and directories.
 
-After installing quick-fasd in Emacs, you can easily navigate your file system directly within Emacs by using Fasd’s fast-access capabilities. For example, you can open recently accessed files or quickly jump to frequently used directories without leaving the Emacs environment.
+After installing the **quick-fasd** Emacs package, you can easily navigate your file system directly within Emacs by using Fasd’s fast-access capabilities. For example, you can open recently accessed files or quickly jump to frequently used directories without leaving the Emacs environment.
 
 Here’s how the package works:
 - `quick-fasd-mode` hooks into `find-file-hook` to automatically add all visited files and directories to Fasd's database.
@@ -12,7 +12,7 @@ Here’s how the package works:
 
 ## Requirements
 
-- `fasd' command line tool, see: https://github.com/clvv/fasd
+- The `fasd` command line tool, see: https://github.com/clvv/fasd
 
 ## Installation
 
@@ -31,7 +31,7 @@ To install *quick-fasd* with `straight.el`:
              :repo "jamescherti/quick-fasd.el"))
 ```
 
-### Emacs: Installing with use-package and :vc (Built-in feature in Emacs version >= 30)
+### Alternative installation: Emacs: Installing with use-package and :vc (Built-in feature in Emacs version >= 30)
 
 To install *quick-fasd* with `use-package` and `:vc` (Emacs >= 30):
 
@@ -42,7 +42,7 @@ To install *quick-fasd* with `use-package` and `:vc` (Emacs >= 30):
        :rev :newest))
 ```
 
-### Doom Emacs
+### Alternative installation: Doom Emacs
 
 Here is how to install *quick-fasd* on Doom Emacs:
 
