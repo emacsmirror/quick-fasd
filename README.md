@@ -10,6 +10,10 @@ Here’s how the package works:
 - `quick-fasd-mode` hooks into `find-file-hook` to automatically add all visited files and directories to Fasd's database.
 - The user can invoke the `quick-fasd-find-file` function, which prompts for input and display available candidates from the Fasd index, enabling rapid and efficient file navigation.
 
+## Requirements
+
+- `fasd' command line tool, see: https://github.com/clvv/fasd
+
 ## Installation
 
 ### Emacs: Install with straight (Emacs version < 30)
