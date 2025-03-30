@@ -1,7 +1,7 @@
 ;;; quick-fasd.el --- Emacs integration for the command-line productivity booster `fasd' -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024-2025 James Cherti
-;; Copyright (C) 2013 steckerhalter
+;; Copyright (C) 2013-2021 steckerhalter
 
 ;; Maintainer: James Cherti
 ;; Original Author: steckerhalter
