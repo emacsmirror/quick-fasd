@@ -70,47 +70,37 @@ doom sync
 
 ## Usage
 
-Add a shortcut key for `quick-fasd-find-file` and enable the
-`quick-fasd-mode` which makes sure that opening files or
-directories in Emacs updates the fasd database.
+### Key binding
 
-``` {.commonlisp org-language="emacs-lisp"}
+Add a shortcut key for `quick-fasd-find-file`:
+
+```elisp
 (global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
-(quick-fasd-mode 1)
 ```
 
-Calling `quick-fasd-find-file` with a prefix argument of
+### Customizations
 
--   `C-u` lists only directories
--   `M--` lists only files
+You can configure `quick-fasd` using Emacs' customization system:
 
-With no prefix it shows files and directories.
+```elisp
+M-x customize-group RET fasd RET
+```
 
-1.  Options
+### Initial Prompt
 
-    Use the customize interface:
+By default, `fasd` prompts for an initial query. To disable this and display all results immediately, set:
 
-    `M-x customize-group RET fasd RET`
+```elisp
+(setq quick-fasd-enable-initial-prompt nil)
+```
 
-    1.  Initial Prompt
+### Completion Function
 
-        Usually `fasd` will prompt for a initial query. To
-        turn that off and get all results directly, set
-        `quick-fasd-enable-initial-prompt` to
-        `nil`.
+`quick-fasd-find-file` uses the standard `completing-read-function`, which may be backed by `helm`, `ido`, or any other completion framework you have configured.
 
-    2.  Completion Function
+### Standard Search Behavior
 
-        By default the standard `completing-read-function`
-        will be used, which could be using `helm` or
-        `ido` depending on what you are using.
-
-    3.  Standard search
-
-        By default the `fasd` search parameter is
-        `-a` which searches files and directories, you can
-        customize this with the `quick-fasd-standard-search`
-        option.
+By default, `fasd` searches for both files and directories using the `-a` parameter. You can customize this behavior by setting the `quick-fasd-standard-search` option to refine the search criteria.
 
 ## Author and License
 
