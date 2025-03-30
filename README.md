@@ -7,7 +7,7 @@ The **quick-fasd** Emacs package integrates the Fasd tool within the Emacs envir
 After installing the **quick-fasd** Emacs package, you can easily navigate your file system directly within Emacs by using Fasd’s fast-access capabilities. For example, you can open recently accessed files or quickly jump to frequently used directories without leaving the Emacs environment.
 
 Here’s how the package works:
-- `quick-fasd-mode` hooks into `find-file-hook` to automatically add all visited files and directories to Fasd's database.
+- `quick-fasd-mode` adds a hook to `find-file-hook` and `dired-mode-hook` to automatically add all visited files and directories to Fasd's database.
 - The user can invoke the `quick-fasd-find-file` function, which prompts for input and display available candidates from the Fasd index, enabling rapid and efficient file navigation.
 
 ## Requirements
@@ -28,7 +28,9 @@ To install *quick-fasd* with `straight.el`:
   :straight (quick-fasd
              :type git
              :host github
-             :repo "jamescherti/quick-fasd.el"))
+             :repo "jamescherti/quick-fasd.el")
+  :config
+  (quick-fasd-mode))
 ```
 
 ### Alternative installation: Emacs: Installing with use-package and :vc (Built-in feature in Emacs version >= 30)
@@ -39,7 +41,9 @@ To install *quick-fasd* with `use-package` and `:vc` (Emacs >= 30):
 (use-package quick-fasd
   :ensure t
   :vc (:url "https://github.com/jamescherti/quick-fasd.el"
-       :rev :newest))
+       :rev :newest)
+  :config
+  (quick-fasd-mode))
 ```
 
 ### Alternative installation: Doom Emacs
@@ -49,16 +53,14 @@ Here is how to install *quick-fasd* on Doom Emacs:
 1. Add to the `~/.doom.d/packages.el` file:
 ```elisp
 (package! quick-fasd
- :recipe
- (:host github :repo "jamescherti/quick-fasd.el"))
+  :recipe
+  (:host github :repo "jamescherti/quick-fasd.el"))
 ```
 
 2. Add to `~/.doom.d/config.el`:
 ```elisp
-;; TODO: Load the mode here
 (after! quick-fasd
- ;; TODO: setq options
- )
+  (quick-fasd-mode))
 ```
 
 3. Run the `doom sync` command:
