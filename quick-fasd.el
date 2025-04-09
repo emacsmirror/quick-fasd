@@ -7,7 +7,7 @@
 ;; Original Author: steckerhalter
 ;; Version: 1.0.0
 ;; URL: https://github.com/jamescherti/quick-fasd.el
-;; Keywords: cli bash zsh autojump
+;; Keywords: convenience
 ;; Package-Requires: ((emacs "25.1"))
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
