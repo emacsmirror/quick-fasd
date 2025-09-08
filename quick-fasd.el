@@ -122,10 +122,11 @@ If PREFIX is nil consider files and directories."
              (shell-command-to-string
               (concat fasd-executable
                       " -l -R"
-                      (pcase (prefix-numeric-value prefix)
-                        (`-1 " -f ")
-                        ((pred (< 1)) " -d ")
-                        (_ (concat " " quick-fasd-standard-search " ")))
+                      (let ((prefix-value (prefix-numeric-value prefix)))
+                        (cond
+                         ((= prefix-value -1) " -f ")
+                         ((> prefix-value 0) " -d ")
+                         (t (concat " " quick-fasd-standard-search " "))))
                       query))
              "\n" t))
            (file (when results
