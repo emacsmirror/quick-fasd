@@ -5,11 +5,12 @@
 
 The **quick-fasd** Emacs package integrates the Fasd tool within the Emacs environment. Fasd, a command-line utility, enhances the productivity of users by providing fast access to frequently used files and directories.
 
-After installing the **quick-fasd** Emacs package, you can easily navigate your file system directly within Emacs by using Fasd’s fast-access capabilities. For example, you can open recently accessed files or quickly jump to frequently used directories without leaving the Emacs environment.
+After installing the **quick-fasd** Emacs package, you can easily navigate your file system directly within Emacs by using Fasd's fast-access capabilities. For example, you can open recently accessed files or quickly jump to frequently used directories without leaving the Emacs environment.
 
-Here’s how the package works:
+Here's how the package works:
 - `quick-fasd-mode` adds a hook to `find-file-hook` and `dired-mode-hook` to automatically add all visited files and directories to Fasd's database.
 - The user can invoke the `quick-fasd-find-file` function, which prompts for input and display available candidates from the Fasd index, enabling rapid and efficient file navigation.
+- When `quick-fasd-find-file` is invoked from the minibuffer, it appends the selected path, simplifying completion.
 
 ## Requirements
 
@@ -30,6 +31,11 @@ To install *quick-fasd* with `straight.el`:
              :type git
              :host github
              :repo "jamescherti/quick-fasd.el")
+
+  :bind (("C-x C-d" . quick-fasd-find-file)
+         :map minibuffer-local-completion-map
+         ("C-x C-d" . quick-fasd-find-file))
+
   :config
   (quick-fasd-mode))
 ```
@@ -43,6 +49,11 @@ To install *quick-fasd* with `use-package` and `:vc` (Emacs >= 30):
   :ensure t
   :vc (:url "https://github.com/jamescherti/quick-fasd.el"
        :rev :newest)
+
+  :bind (("C-x C-d" . quick-fasd-find-file)
+         :map minibuffer-local-completion-map
+         ("C-x C-d" . quick-fasd-find-file))
+
   :config
   (quick-fasd-mode))
 ```
@@ -61,10 +72,15 @@ Here is how to install *quick-fasd* on Doom Emacs:
 2. Add to `~/.doom.d/config.el`:
 ```elisp
 (after! quick-fasd
+  (global-set-key (kbd "C-x C-d") 'quick-fasd-find-file)
+  (define-key minibuffer-local-completion-map
+              (kbd "C-x C-d") 'quick-fasd-find-file)
+
   (quick-fasd-mode))
 ```
 
 3. Run the `doom sync` command:
+`quick-fasd-find-file` uses the standard `completing-read-function`, which may be backed by Consult, helm, *ido*, or any other completion framework you have configured.
 ```
 doom sync
 ```
@@ -76,7 +92,24 @@ doom sync
 Add a shortcut key for `quick-fasd-find-file`:
 
 ```elisp
-(global-set-key (kbd "C-h C-/") 'quick-fasd-find-file)
+(global-set-key (kbd "C-x C-d") 'quick-fasd-find-file)
+
+;; When `quick-fasd-find-file' is invoked from the minibuffer, it appends
+;; the selected path, simplifying completion
+(define-key minibuffer-local-completion-map (kbd "C-x C-d") 'quick-fasd-find-file)
+```
+
+Calling `quick-fasd-find-file` with prefix arguments:
+
+- `C-u`: lists only directories
+- `M--`: lists only files
+
+With no prefix, it displays both files and directories.
+
+Additionally, if prefixes are not used and only directories are desired, `quick-fasd` can be configured to display directories exclusively:
+
+```emacs-lisp
+(setq quick-fasd-standard-search "-d")
 ```
 
 ### Customizations
@@ -97,19 +130,38 @@ By default, `fasd` prompts for an initial query. To disable this and display all
 
 ### Completion Function
 
-`quick-fasd-find-file` uses the standard `completing-read-function`, which may be backed by `helm`, `ido`, or any other completion framework you have configured.
+`quick-fasd-find-file` uses the standard `completing-read-function`, which may be backed by *Consult*, *helm*, *ido*, or any other completion framework you have configured.
 
 ### Standard Search Behavior
 
 By default, `fasd` searches for both files and directories using the `-a` parameter. You can customize this behavior by setting the `quick-fasd-standard-search` option to refine the search criteria.
 
+## Frequently asked questions
+
+### What is the difference between quick-fasd and the fasd Emacs package?
+
+The *quick-fasd* Emacs package is a fork of the *fasd* Emacs package.
+
+Key differences and improvements in *quick-fasd* include:
+
+* When `quick-fasd-find-file` is invoked from the minibuffer, it appends the selected path, simplifying completion.
+* Adds support for indirect Dired buffers.
+* Enhances `dired-mode` detection to append paths using the `fasd` command, increasing their priority for subsequent `fasd` usage.
+* Fixes an issue in `quick-fasd-add-file-to-db` to ensure it respects `quick-fasd-executable-path`.
+* Caches the path to the `fasd` executable for efficiency.
+* Enhances modularity and readability of `quick-fasd` functions.
+* Fixes all Emacs warnings.
+* Renames `global-quick-fasd-mode` to `quick-fasd-mode`.
+* Refines overall code readability and structure.
+* Removes Ivy support, delegating it to a possible third-party package.
+
 ## Author and License
 
-The *quick-fasd* Emacs package has been written by steckerhalter and [James Cherti](https://www.jamescherti.com/) and is distributed under terms of the GNU General Public License version 3, or, at your choice, any later version.
+The *quick-fasd* Emacs package [James Cherti](https://www.jamescherti.com/) and is distributed under terms of the GNU General Public License version 3, or, at your choice, any later version. It is based on the fasd package, originally written by Steckerhalter.
 
 Copyright (C) 2024-2025 James Cherti
 
-Copyright (C) 2013-2021 steckerhalter
+Copyright (C) 2013-2021 Steckerhalter
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
 

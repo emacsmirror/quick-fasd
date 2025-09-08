@@ -25,6 +25,7 @@
 ;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
 ;; The quick-fasd Emacs package integrates the Fasd tool within the Emacs
 ;; environment. Fasd, a command-line utility, enhances the productivity of users
 ;; by providing fast access to frequently used files and directories. Inspired
@@ -33,9 +34,16 @@
 ;; quickly from the command line.
 ;;
 ;; After installing quick-fasd in Emacs, you can easily navigate your file
-;; system directly within Emacs by using Fasd’s fast-access capabilities. For
+;; system directly within Emacs by using Fasd's fast-access capabilities. For
 ;; example, you can open recently accessed files or quickly jump to frequently
 ;; used directories without leaving the Emacs environment.
+;;
+;; Here's how the package works:
+;; - `quick-fasd-mode' adds a hook to `find-file-hook' and `dired-mode-hook' to
+;;   automatically add all visited files and directories to Fasd's database.
+;; - The user can invoke the `quick-fasd-find-file' function, which prompts for
+;;   input and display available candidates from the Fasd index, enabling rapid
+;;   and efficient file navigation.
 
 ;;; Code:
 
@@ -87,13 +95,14 @@ Multiple flags can be specified with spaces, e.g., \"-a -r\"."
       (if (file-directory-p file)
           (funcall quick-fasd-file-manager file)
         (find-file file))
-    (message "Directory or file `%s' doesn't exist" file)))
+    (message "[quick-fasd] No such file or directory %s" file)))
 
-;;;###autoload
-(defun quick-fasd-find-file (&optional query)
-  "Use fasd to open a file or directory.
-Optionally pass QUERY to avoid prompt."
-  (interactive "P")
+(defun quick-fasd--get-file (prefix query)
+  "Use fasd to open a file or directory and return the selected path.
+Optionally pass QUERY to avoid prompt.
+If PREFIX is positive consider only directories.
+If PREFIX is -1 consider only files.
+If PREFIX is nil consider files and directories."
   (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
     (unless query (setq query (if quick-fasd-enable-initial-prompt
                                   (read-from-minibuffer "Fasd: ")
@@ -104,21 +113,42 @@ Optionally pass QUERY to avoid prompt."
              (shell-command-to-string
               (concat fasd-executable
                       " -l -R"
-                      (concat " " quick-fasd-standard-search " ")
+                      (pcase (prefix-numeric-value prefix)
+                        (`-1 " -f ")
+                        ((pred (< 1)) " -d ")
+                        (_ (concat " " quick-fasd-standard-search " ")))
                       query))
              "\n" t))
            (file (when results
                    (setq this-command 'quick-fasd-find-file)
                    (completing-read prompt results nil t))))
-      (if (not file)
-          (message "Fasd found nothing for: '%s'" query)
+      (if file
+          file
+        (message "[quick-fasd] Fasd found nothing for: %S" query)))))
+
+;;;###autoload
+(defun quick-fasd-find-file (prefix &optional query)
+  "Use fasd to open a file or directory.
+Optionally pass QUERY to avoid prompt.
+If PREFIX is positive consider only directories.
+If PREFIX is -1 consider only files.
+If PREFIX is nil consider files and directories."
+  (interactive "P")
+  (if (minibufferp)
+      (let* ((enable-recursive-minibuffers t)
+             (file (quick-fasd--get-file prefix query)))
+        (when file
+          (setq file (file-name-as-directory file))
+          (insert file)))
+    (let ((file (quick-fasd--get-file prefix query)))
+      (when file
         (quick-fasd-find-file-action file)))))
 
 ;;;###autoload
 (defun quick-fasd-add-file-to-db ()
   "Add current file or directory to the Fasd database."
   (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
-    (let ((file (if (eq major-mode 'dired-mode)
+    (let ((file (if (derived-mode-p 'dired-mode)
                     dired-directory
                   (buffer-file-name (buffer-base-buffer)))))
       (when (and file
