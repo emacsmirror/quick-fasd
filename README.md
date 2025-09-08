@@ -156,6 +156,7 @@ Key differences and improvements in *quick-fasd* include:
 * Renames `global-quick-fasd-mode` to `quick-fasd-mode`.
 * Refines overall code readability and structure.
 * Removes Ivy support, delegating it to a possible third-party package.
+* Removes the trailing slash from directories before adding them to Fasd ensures consistent path entries and prevents duplicates.
 
 ## Author and License
 

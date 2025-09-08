@@ -170,11 +170,20 @@ directories."
     (let ((file (if (derived-mode-p 'dired-mode)
                     dired-directory
                   (buffer-file-name (buffer-base-buffer)))))
-      ;; TODO strip the slash from file
       (when (and file
                  (stringp file)
                  (file-readable-p file))
-        (start-process "*fasd*" nil fasd-executable "--add" file)))))
+        (start-process "*fasd*" nil fasd-executable "--add"
+                       ;; It is generally a good idea to strip the trailing
+                       ;; slash from directories before adding them to Fasd:
+                       ;; - fasd stores paths as plain file/directory names.
+                       ;; - Including a trailing slash can create
+                       ;;   inconsistencies, especially when matching
+                       ;;   directories versus files.
+                       ;; - Stripping the slash ensures uniform entries and
+                       ;;   avoids duplicates like /home/user/dir vs
+                       ;;   /home/user/dir/.
+                       (directory-file-name file))))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
@@ -182,6 +191,7 @@ directories."
   :global t
   :group 'quick-fasd
   :lighter " QFasd"
+  ;; TODO: add optional defcustom to update database on window or buffer change
   (if quick-fasd-mode
       (progn (add-hook 'find-file-hook #'quick-fasd-add-file-to-db)
              (add-hook 'dired-mode-hook #'quick-fasd-add-file-to-db))
