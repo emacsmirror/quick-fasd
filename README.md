@@ -99,25 +99,27 @@ Add a shortcut key for `quick-fasd-find-file`:
 (define-key minibuffer-local-completion-map (kbd "C-x C-d") 'quick-fasd-find-file)
 ```
 
-Calling `quick-fasd-find-file` with prefix arguments:
-
-- `C-u`: lists only directories
-- `M--`: lists only files
-
-With no prefix, it displays both files and directories.
-
-Additionally, if prefixes are not used and only directories are desired, `quick-fasd` can be configured to display directories exclusively:
-
-```emacs-lisp
-(setq quick-fasd-standard-search "-d")
-```
-
 ### Customizations
 
 You can configure `quick-fasd` using Emacs' customization system:
 
 ```elisp
-M-x customize-group RET fasd RET
+M-x customize-group RET quick-fasd RET
+```
+
+### Passing custom arguments to Fasd
+
+The `quick-fasd` package allows customizing the types of results returned by Fasd using `quick-fasd-standard-search`:
+
+```emacs-lisp
+;; Display directories only
+(setq quick-fasd-standard-search '("-d"))
+
+;; Display files only
+(setq quick-fasd-standard-search '("-f"))
+
+;; Display both files and directories
+(setq quick-fasd-standard-search '("-a"))
 ```
 
 ### Initial Prompt

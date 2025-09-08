@@ -68,16 +68,20 @@ When set to nil, all fasd results are returned for completion."
           (function :tag "Custom file manager function"))
   :group 'quick-fasd)
 
-(defcustom quick-fasd-standard-search "-a"
-  "Standard search parameter for `fasd'.
+(defcustom quick-fasd-command-args '("-a")
+  "List of flags passed to the fasd command.
+This controls which types of entries are returned.
+
 Available options:
-- `-a': Match files and directories
-- `-d': Match directories only
-- `-f': Match files only
-- `-r': Match by rank only
-- `-t': Match by recent access only
-Multiple flags can be specified with spaces, e.g., \"-a -r\"."
-  :type 'string
+  - `-a': Match files and directories
+  - `-d': Match directories only
+  - `-f': Match files only
+  - `-r': Match by rank only
+  - `-t': Match by recent access only
+
+Multiple flags can be combined by adding them to the list. This allows
+customizing the default behavior of `quick-fasd' searches."
+  :type '(repeat string)
   :group 'quick-fasd)
 
 (defcustom quick-fasd-executable-path "fasd"
@@ -103,30 +107,32 @@ Multiple flags can be specified with spaces, e.g., \"-a -r\"."
       (if (file-directory-p file)
           (funcall quick-fasd-file-manager file)
         (find-file file))
-    (message "[quick-fasd] No such file or directory %s" file)))
+    (user-error "[quick-fasd] No such file or directory %s" file)))
 
 (defun quick-fasd--get-file (prefix query)
   "Use fasd to open a file or directory and return the selected path.
 Return nil if no results are found.
 Optionally pass QUERY to avoid prompt.
-If PREFIX is positive consider only directories.
-If PREFIX is -1 consider only files.
-If PREFIX is nil consider files and directories."
-  (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
+PREFIX is the same prefix as `quick-fasd-find-file'."
+  (let* ((fasd-executable (quick-fasd--get-fasd-executable-path))
+         (prefix-value (prefix-numeric-value prefix))
+         (fasd-args (cond
+                     ((= prefix-value -1) " -f ")
+                     ((= prefix-value 0) " -d ")
+                     (t (format " %s "
+                                (string-join quick-fasd-command-args " "))))))
+    (message "PREFIX: %S / ARGS: %S" prefix-value fasd-args)
     (unless query (setq query (if quick-fasd-enable-initial-prompt
                                   (read-from-minibuffer "Fasd: ")
                                 "")))
     (let* ((prompt "Fasd: ")
            (results
+            ;; TODO Use an alternative such as process-line
             (split-string
              (shell-command-to-string
-              (concat fasd-executable
-                      " -l -R"
-                      (let ((prefix-value (prefix-numeric-value prefix)))
-                        (cond
-                         ((= prefix-value -1) " -f ")
-                         ((> prefix-value 0) " -d ")
-                         (t (concat " " quick-fasd-standard-search " "))))
+              (format "%s -l -R%s %s"
+                      (shell-quote-argument fasd-executable)
+                      fasd-args
                       query))
              "\n" t))
            (file (when results
@@ -134,7 +140,7 @@ If PREFIX is nil consider files and directories."
                    (completing-read prompt results nil t))))
       (if file
           file
-        (message "[quick-fasd] Fasd found nothing for: %S" query)))))
+        (user-error "[quick-fasd] Fasd found nothing for: %S" query)))))
 
 ;;; Functions
 
@@ -142,9 +148,10 @@ If PREFIX is nil consider files and directories."
 (defun quick-fasd-find-file (prefix &optional query)
   "Use fasd to open a file or directory.
 Optionally pass QUERY to avoid prompt.
-If PREFIX is positive consider only directories.
+If PREFIX is 0 consider only directories.
 If PREFIX is -1 consider only files.
-If PREFIX is nil consider files and directories."
+Otherwise, use `quick-fasd-command-args', which by default lists both files and
+directories."
   (interactive "P")
   (if (minibufferp)
       (let* ((enable-recursive-minibuffers t)
@@ -163,6 +170,7 @@ If PREFIX is nil consider files and directories."
     (let ((file (if (derived-mode-p 'dired-mode)
                     dired-directory
                   (buffer-file-name (buffer-base-buffer)))))
+      ;; TODO strip the slash from file
       (when (and file
                  (stringp file)
                  (file-readable-p file))
@@ -173,6 +181,7 @@ If PREFIX is nil consider files and directories."
   "Toggle fasd mode globally."
   :global t
   :group 'quick-fasd
+  :lighter " QFasd"
   (if quick-fasd-mode
       (progn (add-hook 'find-file-hook #'quick-fasd-add-file-to-db)
              (add-hook 'dired-mode-hook #'quick-fasd-add-file-to-db))
