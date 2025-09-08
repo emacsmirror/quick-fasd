@@ -1,7 +1,7 @@
 # quick-fasd.el - Easily navigate your file system directly within Emacs by using Fasd
 ![Build Status](https://github.com/jamescherti/quick-fasd.el/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
-![](https://raw.githubusercontent.com/jamescherti/quick-fasd.el/main/.images/made-for-gnu-emacs.svg)
+![](https://jamescherti.com/misc/made-for-gnu-emacs.svg)
 
 The **quick-fasd** Emacs package integrates the Fasd tool within the Emacs environment. Fasd, a command-line utility, enhances the productivity of users by providing fast access to frequently used files and directories.
 

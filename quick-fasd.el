@@ -47,22 +47,26 @@
 
 ;;; Code:
 
+;;; Defcustom
+
 (defgroup quick-fasd nil
   "Navigate previously-visited files and directories easily."
-  :group 'tools
-  :group 'convenience)
+  :group 'quick-fasd
+  :prefix "quick-fasd-")
 
 (defcustom quick-fasd-enable-initial-prompt t
   "Specify whether to enable prompt for the initial query.
 When set to nil, all fasd results are returned for completion."
-  :type 'boolean)
+  :type 'boolean
+  :group 'quick-fasd)
 
 (defcustom quick-fasd-file-manager 'dired
   "Default file manager used by `quick-fasd-find-file-action'."
   :type '(radio
           (const :tag "Dired, the default Emacs file manager" dired)
           (const :tag "Deer, Ranger's file manager" deer)
-          (function :tag "Custom file manager function")))
+          (function :tag "Custom file manager function"))
+  :group 'quick-fasd)
 
 (defcustom quick-fasd-standard-search "-a"
   "Standard search parameter for `fasd'.
@@ -73,11 +77,15 @@ Available options:
 - `-r': Match by rank only
 - `-t': Match by recent access only
 Multiple flags can be specified with spaces, e.g., \"-a -r\"."
-  :type 'string)
+  :type 'string
+  :group 'quick-fasd)
 
 (defcustom quick-fasd-executable-path "fasd"
   "Path to the Fasd executable or its command name (e.g., fasd)."
-  :type 'string)
+  :type 'string
+  :group 'quick-fasd)
+
+;;; Internal functions
 
 (defun quick-fasd--get-fasd-executable-path ()
   "Return the path to the `fasd` executable or signal an error if not found."
@@ -99,6 +107,7 @@ Multiple flags can be specified with spaces, e.g., \"-a -r\"."
 
 (defun quick-fasd--get-file (prefix query)
   "Use fasd to open a file or directory and return the selected path.
+Return nil if no results are found.
 Optionally pass QUERY to avoid prompt.
 If PREFIX is positive consider only directories.
 If PREFIX is -1 consider only files.
@@ -125,6 +134,8 @@ If PREFIX is nil consider files and directories."
       (if file
           file
         (message "[quick-fasd] Fasd found nothing for: %S" query)))))
+
+;;; Functions
 
 ;;;###autoload
 (defun quick-fasd-find-file (prefix &optional query)
@@ -161,12 +172,13 @@ If PREFIX is nil consider files and directories."
   "Toggle fasd mode globally."
   :global t
   :group 'quick-fasd
-
   (if quick-fasd-mode
       (progn (add-hook 'find-file-hook #'quick-fasd-add-file-to-db)
              (add-hook 'dired-mode-hook #'quick-fasd-add-file-to-db))
     (remove-hook 'find-file-hook #'quick-fasd-add-file-to-db)
     (remove-hook 'dired-mode-hook #'quick-fasd-add-file-to-db)))
+
+;;; Provide
 
 (provide 'quick-fasd)
 ;;; quick-fasd.el ends here
