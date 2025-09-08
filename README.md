@@ -149,13 +149,14 @@ Key differences and improvements in *quick-fasd* include:
 * When `quick-fasd-find-file` is invoked from the minibuffer, it appends the selected path, simplifying completion.
 * Adds support for indirect Dired buffers.
 * Enhances `dired-mode` detection to append paths using the `fasd` command, increasing their priority for subsequent `fasd` usage.
-* Fixes an issue in `quick-fasd-add-file-to-db` to ensure it respects `quick-fasd-executable-path`.
+* Fixes an issue in `quick-fasd-add-path-to-db` to ensure it respects `quick-fasd-executable-path`.
 * Caches the path to the `fasd` executable for efficiency.
 * Enhances modularity and readability of `quick-fasd` functions.
 * Fixes all Emacs warnings.
 * Renames `global-quick-fasd-mode` to `quick-fasd-mode`.
 * Refines overall code readability and structure.
 * Removes Ivy support, delegating it to a possible third-party package.
+* Allows customizing the Lighter
 * Removes the trailing slash from directories before adding them to Fasd ensures consistent path entries and prevents duplicates.
 
 ## Author and License

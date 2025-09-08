@@ -89,6 +89,9 @@ customizing the default behavior of `quick-fasd' searches."
   :type 'string
   :group 'quick-fasd)
 
+(defvar quick-fasd-mode-lighter " QFasd"
+  "Default lighter string for `quick-fasd-mode'.")
+
 ;;; Internal functions
 
 (defun quick-fasd--get-fasd-executable-path ()
@@ -142,6 +145,14 @@ PREFIX is the same prefix as `quick-fasd-find-file'."
           file
         (user-error "[quick-fasd] Fasd found nothing for: %S" query)))))
 
+(defun quick-fasd--hook-add-path-to-db ()
+  "Add current file or directory to the Fasd database."
+  (let ((path (if (derived-mode-p 'dired-mode)
+                  dired-directory
+                (buffer-file-name (buffer-base-buffer)))))
+    (when (and path (stringp path))
+      (quick-fasd-add-path-to-db path))))
+
 ;;; Functions
 
 ;;;###autoload
@@ -164,39 +175,36 @@ directories."
         (quick-fasd-find-file-action file)))))
 
 ;;;###autoload
-(defun quick-fasd-add-file-to-db ()
-  "Add current file or directory to the Fasd database."
+(defun quick-fasd-add-path-to-db (path)
+  "Add PATH to the Fasd database."
   (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
-    (let ((file (if (derived-mode-p 'dired-mode)
-                    dired-directory
-                  (buffer-file-name (buffer-base-buffer)))))
-      (when (and file
-                 (stringp file)
-                 (file-readable-p file))
-        (start-process "*fasd*" nil fasd-executable "--add"
-                       ;; It is generally a good idea to strip the trailing
-                       ;; slash from directories before adding them to Fasd:
-                       ;; - fasd stores paths as plain file/directory names.
-                       ;; - Including a trailing slash can create
-                       ;;   inconsistencies, especially when matching
-                       ;;   directories versus files.
-                       ;; - Stripping the slash ensures uniform entries and
-                       ;;   avoids duplicates like /home/user/dir vs
-                       ;;   /home/user/dir/.
-                       (directory-file-name file))))))
+    (when (and path
+               (stringp path)
+               (file-readable-p path))
+      (start-process "*fasd*" nil fasd-executable "--add"
+                     ;; It is generally a good idea to strip the trailing
+                     ;; slash from directories before adding them to Fasd:
+                     ;; - fasd stores paths as plain file/directory names.
+                     ;; - Including a trailing slash can create
+                     ;;   inconsistencies, especially when matching
+                     ;;   directories versus files.
+                     ;; - Stripping the slash ensures uniform entries and
+                     ;;   avoids duplicates like /home/user/dir vs
+                     ;;   /home/user/dir/.
+                     (directory-file-name path)))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
   "Toggle fasd mode globally."
   :global t
   :group 'quick-fasd
-  :lighter " QFasd"
+  :lighter quick-fasd-mode-lighter
   ;; TODO: add optional defcustom to update database on window or buffer change
   (if quick-fasd-mode
-      (progn (add-hook 'find-file-hook #'quick-fasd-add-file-to-db)
-             (add-hook 'dired-mode-hook #'quick-fasd-add-file-to-db))
-    (remove-hook 'find-file-hook #'quick-fasd-add-file-to-db)
-    (remove-hook 'dired-mode-hook #'quick-fasd-add-file-to-db)))
+      (progn (add-hook 'find-file-hook #'quick-fasd--hook-add-path-to-db)
+             (add-hook 'dired-mode-hook #'quick-fasd--hook-add-path-to-db))
+    (remove-hook 'find-file-hook #'quick-fasd--hook-add-path-to-db)
+    (remove-hook 'dired-mode-hook #'quick-fasd--hook-add-path-to-db)))
 
 ;;; Provide
 
