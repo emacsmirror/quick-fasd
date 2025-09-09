@@ -41,7 +41,7 @@
 ;; Here's how the package works:
 ;; - `quick-fasd-mode' adds a hook to `find-file-hook' and `dired-mode-hook' to
 ;;   automatically add all visited files and directories to Fasd's database.
-;; - The user can invoke the `quick-fasd-find-file' function, which prompts for
+;; - The user can invoke the `quick-fasd-find-path' function, which prompts for
 ;;   input and display available candidates from the Fasd index, enabling rapid
 ;;   and efficient file navigation.
 
@@ -61,7 +61,7 @@ When set to nil, all fasd results are returned for completion."
   :group 'quick-fasd)
 
 (defcustom quick-fasd-file-manager 'find-file
-  "Default file manager used by `quick-fasd-find-file-action'."
+  "Default file manager used by `quick-fasd-find-path-action'."
   :type '(radio
           (const
            :tag "find-file, the built-in function to edit files and directories"
@@ -93,10 +93,10 @@ customizing the default behavior of `quick-fasd' searches."
   :group 'quick-fasd)
 
 (defcustom quick-fasd-minibuffer-insert-path t
-  "Control how `quick-fasd-find-file' behaves in the minibuffer.
+  "Control how `quick-fasd-find-path' behaves in the minibuffer.
 
 If non-nil, the selected path is inserted directly into the minibuffer.
-If nil, `quick-fasd-find-file' opens the directory instead of inserting the
+If nil, `quick-fasd-find-path' opens the directory instead of inserting the
 path."
   :type 'boolean
   :group 'quick-fasd)
@@ -116,7 +116,7 @@ path."
 
     result))
 
-(defun quick-fasd-find-file-action (file)
+(defun quick-fasd-find-path-action (file)
   "Open FILE with appropriate file manager or prompt if unreadable."
   (if (file-readable-p file)
       (if (file-directory-p file)
@@ -128,7 +128,7 @@ path."
   "Use fasd to open a file or directory and return the selected path.
 Return nil if no results are found.
 Optionally pass QUERY to avoid prompt.
-PREFIX is the same prefix as `quick-fasd-find-file'."
+PREFIX is the same prefix as `quick-fasd-find-path'."
   (let* ((fasd-executable (quick-fasd--get-fasd-executable-path))
          (prefix-value (prefix-numeric-value prefix))
          (fasd-args (cond
@@ -151,7 +151,7 @@ PREFIX is the same prefix as `quick-fasd-find-file'."
                       query))
              "\n" t))
            (file (when results
-                   (setq this-command 'quick-fasd-find-file)
+                   (setq this-command 'quick-fasd-find-path)
                    (completing-read prompt results nil t))))
       (if file
           file
@@ -168,7 +168,7 @@ PREFIX is the same prefix as `quick-fasd-find-file'."
 ;;; Functions
 
 ;;;###autoload
-(defun quick-fasd-find-file (prefix &optional query)
+(defun quick-fasd-find-path (prefix &optional query)
   "Use fasd to open a file or directory.
 Optionally pass QUERY to avoid prompt.
 If PREFIX is 0 consider only directories.
@@ -185,7 +185,12 @@ directories."
           (insert file)))
     (let ((file (quick-fasd--get-file prefix query)))
       (when file
-        (quick-fasd-find-file-action file)))))
+        (quick-fasd-find-path-action file)))))
+
+(define-obsolete-function-alias
+  'quick-fasd-find-file
+  'quick-fasd-find-path
+  "1.0.1")
 
 ;;;###autoload
 (defun quick-fasd-add-path-to-db (path)
@@ -222,4 +227,5 @@ directories."
 ;;; Provide
 
 (provide 'quick-fasd)
+
 ;;; quick-fasd.el ends here

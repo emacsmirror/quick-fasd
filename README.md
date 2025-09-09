@@ -9,8 +9,8 @@ After installing the **quick-fasd** Emacs package, you can easily navigate your 
 
 Here's how the package works:
 - `quick-fasd-mode` adds a hook to `find-file-hook` and `dired-mode-hook` to automatically add all visited files and directories to Fasd's database.
-- The user can invoke the `quick-fasd-find-file` function, which prompts for input and display available candidates from the Fasd index, enabling rapid and efficient file navigation.
-- When `quick-fasd-find-file` is invoked from the minibuffer, it appends the selected path, simplifying completion.
+- The user can invoke the `quick-fasd-find-path` function, which prompts for input and display available candidates from the Fasd index, enabling rapid and efficient file navigation.
+- When `quick-fasd-find-path` is invoked from the minibuffer, it appends the selected path, simplifying completion.
 
 ## Requirements
 
@@ -32,9 +32,9 @@ To install *quick-fasd* with `straight.el`:
              :host github
              :repo "jamescherti/quick-fasd.el")
 
-  :bind (("C-x C-d" . quick-fasd-find-file)
+  :bind (("C-x C-d" . quick-fasd-find-path)
          :map minibuffer-local-completion-map
-         ("C-x C-d" . quick-fasd-find-file))
+         ("C-x C-d" . quick-fasd-find-path))
 
   :config
   (quick-fasd-mode))
@@ -50,11 +50,11 @@ To install *quick-fasd* with `use-package` and `:vc` (Emacs >= 30):
   :vc (:url "https://github.com/jamescherti/quick-fasd.el"
        :rev :newest)
 
-  :bind (("C-x C-d" . quick-fasd-find-file)
-         ;; When `quick-fasd-find-file' is invoked from the minibuffer, it appends the
+  :bind (("C-x C-d" . quick-fasd-find-path)
+         ;; When `quick-fasd-find-path' is invoked from the minibuffer, it appends the
          ;; selected path, simplifying completion Path insertion.
          :map minibuffer-local-completion-map
-         ("C-x C-d" . quick-fasd-find-file))
+         ("C-x C-d" . quick-fasd-find-path))
 
   :config
   (quick-fasd-mode))
@@ -74,17 +74,17 @@ Here is how to install *quick-fasd* on Doom Emacs:
 2. Add to `~/.doom.d/config.el`:
 ```elisp
 (after! quick-fasd
-  (global-set-key (kbd "C-x C-d") 'quick-fasd-find-file)
-  ;; When `quick-fasd-find-file' is invoked from the minibuffer, it appends the
+  (global-set-key (kbd "C-x C-d") 'quick-fasd-find-path)
+  ;; When `quick-fasd-find-path' is invoked from the minibuffer, it appends the
   ;; selected path, simplifying completion Path insertion.
   (define-key minibuffer-local-completion-map
-              (kbd "C-x C-d") 'quick-fasd-find-file)
+              (kbd "C-x C-d") 'quick-fasd-find-path)
 
   (quick-fasd-mode))
 ```
 
 3. Run the `doom sync` command:
-`quick-fasd-find-file` uses the standard `completing-read-function`, which may be backed by Consult, helm, *ido*, or any other completion framework you have configured.
+`quick-fasd-find-path` uses the standard `completing-read-function`, which may be backed by Consult, helm, *ido*, or any other completion framework you have configured.
 ```
 doom sync
 ```
@@ -93,15 +93,15 @@ doom sync
 
 ### Key binding
 
-Add a shortcut key for `quick-fasd-find-file`:
+Add a shortcut key for `quick-fasd-find-path`:
 
 ```elisp
-(global-set-key (kbd "C-x C-d") 'quick-fasd-find-file)
+(global-set-key (kbd "C-x C-d") 'quick-fasd-find-path)
 
-;; When `quick-fasd-find-file' is invoked from the minibuffer, it appends
+;; When `quick-fasd-find-path' is invoked from the minibuffer, it appends
 ;; the selected path, simplifying completion.
 ;; Path insertion can be disabled by setting `quick-fasd-minibuffer-insert-path' to nil.
-(define-key minibuffer-local-completion-map (kbd "C-x C-d") 'quick-fasd-find-file)
+(define-key minibuffer-local-completion-map (kbd "C-x C-d") 'quick-fasd-find-path)
 ```
 
 ### Customizations
@@ -137,7 +137,7 @@ By default, `fasd` prompts for an initial query. To disable this and display all
 
 ### Completion Function
 
-`quick-fasd-find-file` uses the standard `completing-read-function`, which may be backed by *Consult*, *helm*, *ido*, or any other completion framework you have configured.
+`quick-fasd-find-path` uses the standard `completing-read-function`, which may be backed by *Consult*, *helm*, *ido*, or any other completion framework you have configured.
 
 ### Standard Search Behavior
 
@@ -151,7 +151,7 @@ The *quick-fasd* Emacs package is a fork of the *fasd* Emacs package.
 
 Key differences and improvements in *quick-fasd* include:
 
-* When `quick-fasd-find-file` is invoked from the minibuffer, it appends the selected path, simplifying completion. (This can be disabled by setting `quick-fasd-minibuffer-insert-path` to nil)
+* When `quick-fasd-find-path` is invoked from the minibuffer, it appends the selected path, simplifying completion. (This can be disabled by setting `quick-fasd-minibuffer-insert-path` to nil)
 * Adds support for indirect Dired buffers.
 * Enhances `dired-mode` detection to append paths using the `fasd` command, increasing their priority for subsequent `fasd` usage.
 * Fixes an issue in `quick-fasd-add-path-to-db` to ensure it respects `quick-fasd-executable-path`.
