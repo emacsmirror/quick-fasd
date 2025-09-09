@@ -50,7 +50,7 @@
 ;;; Defcustom
 
 (defgroup quick-fasd nil
-  "Navigate previously-visited files and directories easily."
+  "Quickly accessing previously-visited files and directories using Fasd."
   :group 'quick-fasd
   :prefix "quick-fasd-")
 
@@ -60,6 +60,7 @@ When set to nil, all fasd results are returned for completion."
   :type 'boolean
   :group 'quick-fasd)
 
+;; TODO make this type function
 (defcustom quick-fasd-file-manager 'find-file
   "Default file manager used by `quick-fasd-find-path-action'."
   :type '(radio
@@ -112,8 +113,7 @@ path."
     (when (or (not result)
               (not (file-regular-p result))
               (not (file-executable-p result)))
-      (error "The fasd executable was not found"))
-
+      (error "Fasd executable not found: %s" quick-fasd-executable-path))
     result))
 
 (defun quick-fasd-find-path-action (file)
@@ -209,11 +209,14 @@ directories."
                      ;; - Stripping the slash ensures uniform entries and
                      ;;   avoids duplicates like /home/user/dir vs
                      ;;   /home/user/dir/.
-                     (directory-file-name path)))))
+                     ;;
+                     ;; This also `expand-file-name' to normalize paths before
+                     ;; adding them to Fasd.
+                     (directory-file-name (expand-file-name path))))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
-  "Toggle fasd mode globally."
+  "Toggle `quick-fasd-mode' mode globally."
   :global t
   :group 'quick-fasd
   :lighter quick-fasd-mode-lighter

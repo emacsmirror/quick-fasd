@@ -163,6 +163,7 @@ Key differences and improvements in *quick-fasd* include:
 * Removes Ivy support, delegating it to a possible third-party package.
 * Allows customizing the Lighter
 * Removes the trailing slash from directories before adding them to Fasd ensures consistent path entries and prevents duplicates.
+* Normalizes the path before adding it to Fasd by expanding it (e.g., replacing `~/` with the home directory) and removing any trailing slash from directories.
 
 ## Author and License
 
