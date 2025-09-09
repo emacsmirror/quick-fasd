@@ -92,6 +92,15 @@ customizing the default behavior of `quick-fasd' searches."
   :type 'string
   :group 'quick-fasd)
 
+(defcustom quick-fasd-minibuffer-insert-path t
+  "Control how `quick-fasd-find-file' behaves in the minibuffer.
+
+If non-nil, the selected path is inserted directly into the minibuffer.
+If nil, `quick-fasd-find-file' opens the directory instead of inserting the
+path."
+  :type 'boolean
+  :group 'quick-fasd)
+
 (defvar quick-fasd-mode-lighter " QFasd"
   "Default lighter string for `quick-fasd-mode'.")
 
@@ -167,7 +176,8 @@ If PREFIX is -1 consider only files.
 Otherwise, use `quick-fasd-command-args', which by default lists both files and
 directories."
   (interactive "P")
-  (if (minibufferp)
+  (if (and quick-fasd-minibuffer-insert-path
+           (minibufferp))
       (let* ((enable-recursive-minibuffers t)
              (file (quick-fasd--get-file prefix query)))
         (when file
