@@ -145,6 +145,30 @@ The `M-x quick-fasd-find-path` command uses the standard `completing-read-functi
 
 By default, *quick-fasd* searches for both files and directories using the `-a` parameter. You can customize this behavior by setting the `quick-fasd-standard-search` option to refine the search criteria.
 
+### Automatically adding paths on buffer or window change
+
+Quick-Fasd can optionally add the current file or directory to the Fasd database whenever the buffer or window changes. This behavior is controlled by the `quick-fasd-auto-add-on-buffer-change` option.
+
+To enable automatic path addition, set the option to `t`:
+
+```elisp
+(setq quick-fasd-auto-add-on-buffer-change t)
+```
+
+When enabled, Quick-Fasd will track every file or directory visited in Emacs, including those accessed through buffers and Dired windows, without requiring manual addition.
+
+Benefits:
+
+- **Seamless tracking**: Ensures that all relevant files and directories are added to Fasd automatically.
+- **Improved workflow**: Facilitates faster navigation through frequently accessed paths using Quick-Fasd commands, without the need to manually update the database.
+
+Drawbacks:
+
+- **Increased background activity:** Each buffer or window change spawns a background process to update the Fasd database. While this does not block Emacs, it can generate extra system activity if buffers are switched frequently.
+- **Database growth**: Continuous automatic additions may increase the size of the Fasd database over time, potentially including entries that are rarely used.
+
+Use this option when the convenience of automatic tracking outweighs the potential performance and database size considerations.
+
 ## Frequently asked questions
 
 ### What is the difference between quick-fasd and the fasd Emacs package?
@@ -167,6 +191,7 @@ Key differences and improvements in *quick-fasd* include:
 - Removes the trailing slash from directories before adding them to Fasd ensures consistent path entries and prevents duplicates.
 - Normalizes the path before adding it to Fasd by expanding it (e.g., replacing `~/` with the home directory).
 - Provides a function to remove a specified path from the Fasd database (`quick-fasd-delete-path`).
+- Can optionally add the current file or directory to the Fasd database whenever the buffer or window changes. This behavior is controlled by the `quick-fasd-auto-add-on-buffer-change` option.
 
 ## Author and License
 
