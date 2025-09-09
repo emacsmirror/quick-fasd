@@ -55,8 +55,15 @@
   :prefix "quick-fasd-")
 
 (defcustom quick-fasd-enable-initial-prompt t
-  "Specify whether to enable prompt for the initial query.
-When set to nil, all fasd results are returned for completion."
+  "When non-nil, prompt the user for a query first.
+
+When nil, return all fasd paths immediately for completion.
+
+Setting this to nil is useful when using completion frameworks such as Consult,
+Vertico, or Orderless, allowing them to handle filtering instead of fasd.
+
+However, fetching all paths from fasd can be slower for large file databases and
+may produce an overwhelming number of candidates."
   :type 'boolean
   :group 'quick-fasd)
 
@@ -136,9 +143,10 @@ PREFIX is the same prefix as `quick-fasd-find-path'."
                      ((= prefix-value 0) " -d ")
                      (t (format " %s "
                                 (string-join quick-fasd-command-args " "))))))
-    (unless query (setq query (if quick-fasd-enable-initial-prompt
-                                  (read-from-minibuffer "Fasd: ")
-                                "")))
+    (unless query
+      (setq query (if quick-fasd-enable-initial-prompt
+                      (read-from-minibuffer "Fasd: ")
+                    "")))
     (let* ((prompt "Fasd: ")
            (results
             ;; TODO Use an alternative such as process-line

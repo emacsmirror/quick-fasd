@@ -151,19 +151,19 @@ The *quick-fasd* Emacs package is a fork of the *fasd* Emacs package.
 
 Key differences and improvements in *quick-fasd* include:
 
-* When `quick-fasd-find-path` is invoked from the minibuffer, it appends the selected path, simplifying completion. (This can be disabled by setting `quick-fasd-minibuffer-insert-path` to nil)
-* Adds support for indirect Dired buffers.
-* Enhances `dired-mode` detection to append paths using the `fasd` command, increasing their priority for subsequent `fasd` usage.
-* Fixes an issue in `quick-fasd-add-path-to-db` to ensure it respects `quick-fasd-executable-path`.
-* Caches the path to the `fasd` executable for efficiency.
-* Enhances modularity and readability of `quick-fasd` functions.
-* Fixes all Emacs warnings.
-* Renames `global-quick-fasd-mode` to `quick-fasd-mode`.
-* Refines overall code readability and structure.
-* Removes Ivy support, delegating it to a possible third-party package.
-* Allows customizing the Lighter
-* Removes the trailing slash from directories before adding them to Fasd ensures consistent path entries and prevents duplicates.
-* Normalizes the path before adding it to Fasd by expanding it (e.g., replacing `~/` with the home directory) and removing any trailing slash from directories.
+- When `quick-fasd-find-path` is invoked from the minibuffer, it appends the selected path, simplifying completion. (This can be disabled by setting `quick-fasd-minibuffer-insert-path` to nil)
+- Adds support for indirect Dired buffers.
+- Enhances `dired-mode` detection to append paths using the `fasd` command, increasing their priority for subsequent `fasd` usage.
+- Fixes an issue in `quick-fasd-add-path-to-db` to ensure it respects `quick-fasd-executable-path`.
+- Caches the path to the `fasd` executable for efficiency.
+- Enhances modularity and readability of `quick-fasd` functions.
+- Fixes all Emacs warnings.
+- Renames `global-quick-fasd-mode` to `quick-fasd-mode`.
+- Refines overall code readability and structure.
+- Removes Ivy support, delegating it to a possible third-party package.
+- Allows customizing the Lighter
+- Removes the trailing slash from directories before adding them to Fasd ensures consistent path entries and prevents duplicates.
+- Normalizes the path before adding it to Fasd by expanding it (e.g., replacing `~/` with the home directory) and removing any trailing slash from directories.
 
 ## Author and License
 
