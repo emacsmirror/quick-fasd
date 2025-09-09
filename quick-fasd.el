@@ -136,7 +136,6 @@ PREFIX is the same prefix as `quick-fasd-find-path'."
                      ((= prefix-value 0) " -d ")
                      (t (format " %s "
                                 (string-join quick-fasd-command-args " "))))))
-    (message "PREFIX: %S / ARGS: %S" prefix-value fasd-args)
     (unless query (setq query (if quick-fasd-enable-initial-prompt
                                   (read-from-minibuffer "Fasd: ")
                                 "")))
