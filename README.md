@@ -173,7 +173,7 @@ Use this option when the convenience of automatic tracking outweighs the potenti
 
 ### What is the difference between quick-fasd and the fasd Emacs package?
 
-The *quick-fasd* Emacs package is a fork of the *fasd* Emacs package.
+The *quick-fasd* Emacs package is a fork of the unmaintained *fasd* Emacs package. It supersedes *fasd* by providing additional features and bug fixes.
 
 Key differences and improvements in *quick-fasd* include:
 
