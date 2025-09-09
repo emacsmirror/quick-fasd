@@ -113,14 +113,20 @@ path."
 
 ;;; Internal functions
 
+(defvar quick-fasd--internal-executable nil)
+
 (defun quick-fasd--get-fasd-executable-path ()
   "Return the path to the `fasd` executable or signal an error if not found."
-  (let ((result (executable-find quick-fasd-executable-path)))
-    (when (or (not result)
-              (not (file-regular-p result))
-              (not (file-executable-p result)))
-      (error "Fasd executable not found: %s" quick-fasd-executable-path))
-    result))
+  (unless quick-fasd--internal-executable
+    (setq quick-fasd--internal-executable
+          (let ((result (executable-find quick-fasd-executable-path)))
+            (when (or (not result)
+                      (not (file-regular-p result))
+                      (not (file-executable-p result)))
+              (user-error "Fasd executable not found: %s"
+                          quick-fasd-executable-path))
+            result)))
+  quick-fasd--internal-executable)
 
 (defun quick-fasd-find-path-action (file)
   "Open FILE with appropriate file manager or prompt if unreadable."
@@ -199,6 +205,18 @@ directories."
   "1.0.1")
 
 ;;;###autoload
+(defun quick-fasd-delete-path (path)
+  "Delete PATH from the Fasd database."
+  (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
+    (when (and path
+               (stringp path))
+      (start-process "*fasd*" nil fasd-executable "-D"
+                     ;; This expands PATH to an absolute form using
+                     ;; `expand-file-name'. Normalization ensures uniform
+                     ;; entries and avoids inconsistencies or duplicates.
+                     (expand-file-name path)))))
+
+;;;###autoload
 (defun quick-fasd-add-path (path)
   "Add PATH to the Fasd database."
   (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
@@ -206,19 +224,10 @@ directories."
                (stringp path)
                (file-readable-p path))
       (start-process "*fasd*" nil fasd-executable "--add"
-                     ;; It is generally a good idea to strip the trailing
-                     ;; slash from directories before adding them to Fasd:
-                     ;; - fasd stores paths as plain file/directory names.
-                     ;; - Including a trailing slash can create
-                     ;;   inconsistencies, especially when matching
-                     ;;   directories versus files.
-                     ;; - Stripping the slash ensures uniform entries and
-                     ;;   avoids duplicates like /home/user/dir vs
-                     ;;   /home/user/dir/.
-                     ;;
-                     ;; This also `expand-file-name' to normalize paths before
-                     ;; adding them to Fasd.
-                     (directory-file-name (expand-file-name path))))))
+                     ;; This expands PATH to an absolute form using
+                     ;; `expand-file-name'. Normalization ensures uniform
+                     ;; entries and avoids inconsistencies or duplicates.
+                     (expand-file-name path)))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
