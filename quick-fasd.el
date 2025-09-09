@@ -61,7 +61,6 @@ When nil, return all fasd paths immediately for completion.
 
 Setting this to nil is useful when using completion frameworks such as Consult,
 Vertico, or Orderless, allowing them to handle filtering instead of fasd.
-
 However, fetching all paths from fasd can be slower for large file databases and
 may produce an overwhelming number of candidates."
   :type 'boolean

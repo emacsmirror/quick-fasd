@@ -129,19 +129,21 @@ The `quick-fasd` package allows customizing the types of results returned by Fas
 
 ### Initial Prompt
 
-By default, `fasd` prompts for an initial query. To disable this and display all results immediately, set:
+By default, *quick-fasd* prompts for an initial query. To bypass the prompt and display all results immediately, set:
 
 ```elisp
 (setq quick-fasd-enable-initial-prompt nil)
 ```
 
+Setting this to nil is useful when using completion frameworks such as Consult, Vertico, or Orderless, allowing them to handle filtering instead of fasd. However, fetching all paths from fasd can be slower for large file databases and may produce an overwhelming number of candidates.
+
 ### Completion Function
 
-`quick-fasd-find-path` uses the standard `completing-read-function`, which may be backed by *Consult*, *helm*, *ido*, or any other completion framework you have configured.
+The `M-x quick-fasd-find-path` command uses the standard `completing-read-function`, which may be backed by *Consult*, *helm*, *ido*, or any other completion framework you have configured.
 
 ### Standard Search Behavior
 
-By default, `fasd` searches for both files and directories using the `-a` parameter. You can customize this behavior by setting the `quick-fasd-standard-search` option to refine the search criteria.
+By default, *quick-fasd* searches for both files and directories using the `-a` parameter. You can customize this behavior by setting the `quick-fasd-standard-search` option to refine the search criteria.
 
 ## Frequently asked questions
 
