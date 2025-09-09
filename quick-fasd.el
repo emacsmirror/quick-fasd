@@ -169,7 +169,7 @@ PREFIX is the same prefix as `quick-fasd-find-path'."
                   dired-directory
                 (buffer-file-name (buffer-base-buffer)))))
     (when (and path (stringp path))
-      (quick-fasd-add-path-to-db path))))
+      (quick-fasd-add-path path))))
 
 ;;; Functions
 
@@ -199,7 +199,7 @@ directories."
   "1.0.1")
 
 ;;;###autoload
-(defun quick-fasd-add-path-to-db (path)
+(defun quick-fasd-add-path (path)
   "Add PATH to the Fasd database."
   (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
     (when (and path

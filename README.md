@@ -156,7 +156,7 @@ Key differences and improvements in *quick-fasd* include:
 - When `quick-fasd-find-path` is invoked from the minibuffer, it appends the selected path, simplifying completion. (This can be disabled by setting `quick-fasd-minibuffer-insert-path` to nil)
 - Adds support for indirect Dired buffers.
 - Enhances `dired-mode` detection to append paths using the `fasd` command, increasing their priority for subsequent `fasd` usage.
-- Fixes an issue in `quick-fasd-add-path-to-db` to ensure it respects `quick-fasd-executable-path`.
+- Fixes an issue in `quick-fasd-add-path` to ensure it respects `quick-fasd-executable-path`.
 - Caches the path to the `fasd` executable for efficiency.
 - Enhances modularity and readability of `quick-fasd` functions.
 - Fixes all Emacs warnings.
