@@ -60,9 +60,12 @@ When set to nil, all fasd results are returned for completion."
   :type 'boolean
   :group 'quick-fasd)
 
-(defcustom quick-fasd-file-manager 'dired
+(defcustom quick-fasd-file-manager 'find-file
   "Default file manager used by `quick-fasd-find-file-action'."
   :type '(radio
+          (const
+           :tag "find-file, the built-in function to edit files and directories"
+           find-file)
           (const :tag "Dired, the default Emacs file manager" dired)
           (const :tag "Deer, Ranger's file manager" deer)
           (function :tag "Custom file manager function"))
