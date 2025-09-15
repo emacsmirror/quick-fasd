@@ -1,4 +1,4 @@
-;;; quick-fasd.el --- Emacs integration for the command-line tool `fasd' -*- lexical-binding: t; -*-
+;;; quick-fasd.el --- Integration for the command-line tool `fasd' -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024-2025 James Cherti
 ;; Copyright (C) 2013-2021 steckerhalter
@@ -230,7 +230,7 @@ directories."
 
 (define-obsolete-function-alias
   'quick-fasd-find-file
-  'quick-fasd-find-path
+  #'quick-fasd-find-path
   "1.0.1")
 
 ;;;###autoload
