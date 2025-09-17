@@ -33,15 +33,9 @@ If this package improves the workflow, consider supporting the project by **⭐ 
 ```emacs-lisp
 (use-package quick-fasd
   :ensure t
-  :straight (quick-fasd
-             :type git
-             :host github
-             :repo "jamescherti/quick-fasd.el")
-
   :bind (("C-x C-d" . quick-fasd-find-path)
          :map minibuffer-local-completion-map
          ("C-x C-d" . quick-fasd-find-path))
-
   :config
   (quick-fasd-mode))
 ```
