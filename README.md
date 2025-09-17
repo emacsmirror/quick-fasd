@@ -7,7 +7,7 @@
 
 The **quick-fasd** Emacs package integrates the Fasd tool into the Emacs environment. Fasd is a command-line utility that provides fast access to frequently used files and directories.
 
-After installing **quick-fasd**:
+After installing **quick-fasd** and enabling `quick-fasd-mode`:
 
 * All visited files and directories are automatically added to the Fasd database.
 * File system navigation can be performed directly within Emacs using Fasd's fast-access capabilities. For example, recently accessed files can be opened, and frequently used directories can be visited without leaving Emacs.
