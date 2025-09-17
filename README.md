@@ -1,5 +1,7 @@
 # quick-fasd.el - Integrate Fasd for fast file and directory navigation in Emacs
 ![Build Status](https://github.com/jamescherti/quick-fasd.el/actions/workflows/ci.yml/badge.svg)
+[![MELPA](https://melpa.org/packages/quick-fasd-badge.svg)](https://melpa.org/#/quick-fasd)
+[![MELPA Stable](https://stable.melpa.org/packages/quick-fasd-badge.svg)](https://stable.melpa.org/#/quick-fasd)
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
 ![](https://jamescherti.com/misc/made-for-gnu-emacs.svg)
 
@@ -22,7 +24,11 @@ If this package improves the workflow, consider supporting the project by **⭐ 
 
 - The [fasd](https://github.com/clvv/fasd) command line tool.
 
-## Installation from MELPA
+## Installation
+
+1. If you haven't already done so, [add MELPA repository to your Emacs configuration](https://melpa.org/#/getting-started).
+
+2. Add the following code to your Emacs init file to install **easysession** from MELPA:
 
 ```emacs-lisp
 (use-package quick-fasd
