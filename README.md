@@ -9,14 +9,9 @@ The **quick-fasd** Emacs package integrates the Fasd tool into the Emacs environ
 
 After installing **quick-fasd** and enabling `quick-fasd-mode`:
 
-* All visited files and directories are automatically added to the Fasd database.
-* File system navigation can be performed directly within Emacs using Fasd's fast-access capabilities. For example, recently accessed files can be opened, and frequently used directories can be visited without leaving Emacs.
-
-Package functionality:
-
-* `quick-fasd-mode` registers hooks in `find-file-hook` and `dired-mode-hook` to add visited files and directories to the Fasd database automatically.
-* The `quick-fasd-find-path` function prompts for input and presents candidates from the Fasd index, enabling efficient file navigation.
-* When invoked from the minibuffer, `quick-fasd-find-path` appends the selected path, simplifying completion.
+- **All visited files and directories are automatically added to the Fasd database**. (`quick-fasd-mode` registers hooks in `find-file-hook` and `dired-mode-hook` to add visited files and directories to the Fasd database automatically.)
+- **The `quick-fasd-find-path` function prompts for input and presents candidates from the Fasd index.** For example, recently accessed files can be opened, and frequently used directories can be visited without leaving Emacs.
+- When invoked from the minibuffer, `quick-fasd-find-path` appends the selected path, simplifying completion.
 
 If this package improves the workflow, consider supporting the project by **⭐ starring quick-fasd.el on GitHub** so that more Emacs users can benefit from it.
 
