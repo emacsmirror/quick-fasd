@@ -22,14 +22,8 @@ If this package improves the workflow, consider supporting the project by **⭐ 
 
 - The [fasd](https://github.com/clvv/fasd) command line tool.
 
-## Installation
+## Installation from MELPA
 
-### Emacs: Install with straight (Emacs version < 30)
-
-To install *quick-fasd* with `straight.el`:
-
-1. It if hasn't already been done, [add the straight.el bootstrap code](https://github.com/radian-software/straight.el?tab=readme-ov-file#getting-started) to your init file.
-2. Add the following code to the Emacs init file:
 ```emacs-lisp
 (use-package quick-fasd
   :ensure t
@@ -44,55 +38,6 @@ To install *quick-fasd* with `straight.el`:
 
   :config
   (quick-fasd-mode))
-```
-
-### Alternative installation: Emacs: Installing with use-package and :vc (Built-in feature in Emacs version >= 30)
-
-To install *quick-fasd* with `use-package` and `:vc` (Emacs >= 30):
-
-``` emacs-lisp
-(use-package quick-fasd
-  :ensure t
-  :vc (:url "https://github.com/jamescherti/quick-fasd.el"
-       :rev :newest)
-
-  :bind (("C-x C-d" . quick-fasd-find-path)
-         ;; When `quick-fasd-find-path' is invoked from the minibuffer, it appends the
-         ;; selected path, simplifying completion Path insertion.
-         :map minibuffer-local-completion-map
-         ("C-x C-d" . quick-fasd-find-path))
-
-  :config
-  (quick-fasd-mode))
-```
-
-### Alternative installation: Doom Emacs
-
-Here is how to install *quick-fasd* on Doom Emacs:
-
-1. Add to the `~/.doom.d/packages.el` file:
-```elisp
-(package! quick-fasd
-  :recipe
-  (:host github :repo "jamescherti/quick-fasd.el"))
-```
-
-2. Add to `~/.doom.d/config.el`:
-```elisp
-(after! quick-fasd
-  (global-set-key (kbd "C-x C-d") 'quick-fasd-find-path)
-  ;; When `quick-fasd-find-path' is invoked from the minibuffer, it appends the
-  ;; selected path, simplifying completion Path insertion.
-  (define-key minibuffer-local-completion-map
-              (kbd "C-x C-d") 'quick-fasd-find-path)
-
-  (quick-fasd-mode))
-```
-
-3. Run the `doom sync` command:
-`quick-fasd-find-path` uses the standard `completing-read-function`, which may be backed by Consult, helm, *ido*, or any other completion framework you have configured.
-```
-doom sync
 ```
 
 ## Usage
