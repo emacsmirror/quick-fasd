@@ -1,4 +1,4 @@
-# quick-fasd.el - Easily navigate your file system directly within Emacs by using Fasd
+# quick-fasd.el - Integrate Fasd for fast file and directory navigation in Emacs
 ![Build Status](https://github.com/jamescherti/quick-fasd.el/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
 ![](https://jamescherti.com/misc/made-for-gnu-emacs.svg)
