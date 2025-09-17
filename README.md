@@ -3,14 +3,20 @@
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
 ![](https://jamescherti.com/misc/made-for-gnu-emacs.svg)
 
-The **quick-fasd** Emacs package integrates the Fasd tool within the Emacs environment. Fasd, a command-line utility, enhances the productivity of users by providing fast access to frequently used files and directories.
+The **quick-fasd** Emacs package integrates the Fasd tool into the Emacs environment. Fasd is a command-line utility that provides fast access to frequently used files and directories.
 
-After installing the **quick-fasd** Emacs package, you can easily navigate your file system directly within Emacs by using Fasd's fast-access capabilities. For example, you can open recently accessed files or quickly jump to frequently used directories without leaving the Emacs environment.
+After installing **quick-fasd**:
 
-Here's how the package works:
-- `quick-fasd-mode` adds a hook to `find-file-hook` and `dired-mode-hook` to automatically add all visited files and directories to Fasd's database.
-- The user can invoke the `quick-fasd-find-path` function, which prompts for input and display available candidates from the Fasd index, enabling rapid and efficient file navigation.
-- When `quick-fasd-find-path` is invoked from the minibuffer, it appends the selected path, simplifying completion.
+* All visited files and directories are automatically added to the Fasd database.
+* File system navigation can be performed directly within Emacs using Fasd's fast-access capabilities. For example, recently accessed files can be opened, and frequently used directories can be visited without leaving Emacs.
+
+Package functionality:
+
+* `quick-fasd-mode` registers hooks in `find-file-hook` and `dired-mode-hook` to add visited files and directories to the Fasd database automatically.
+* The `quick-fasd-find-path` function prompts for input and presents candidates from the Fasd index, enabling efficient file navigation.
+* When invoked from the minibuffer, `quick-fasd-find-path` appends the selected path, simplifying completion.
+
+If this package improves the workflow, consider supporting the project by **⭐ starring quick-fasd.el on GitHub** so that more Emacs users can benefit from it.
 
 ## Requirements
 
