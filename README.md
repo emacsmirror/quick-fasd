@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/github/license/jamescherti/quick-fasd.el)
 ![](https://jamescherti.com/misc/made-for-gnu-emacs.svg)
 
-The **quick-fasd** Emacs package integrates the Fasd tool into the Emacs environment. Fasd is a command-line utility that provides fast access to frequently used files and directories.
+The [quick-fasd](https://github.com/jamescherti/quick-fasd.el) Emacs package integrates the Fasd tool into the Emacs environment. Fasd is a command-line utility that provides fast access to frequently used files and directories.
 
 After installing **quick-fasd** and enabling `quick-fasd-mode`:
 
