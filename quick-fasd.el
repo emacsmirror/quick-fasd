@@ -260,7 +260,7 @@ directories."
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
-  "Toggle `quick-fasd-mode' mode globally."
+  "Integration for the command-line tool `fasd'."
   :global t
   :group 'quick-fasd
   :lighter quick-fasd-mode-lighter
