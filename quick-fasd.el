@@ -1,6 +1,6 @@
 ;;; quick-fasd.el --- Integration for the command-line tool `fasd' -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025 James Cherti
+;; Copyright (C) 2024-2026 James Cherti
 ;; Copyright (C) 2013-2021 steckerhalter
 
 ;; Maintainer: James Cherti

@@ -143,7 +143,7 @@ Key differences and improvements in *quick-fasd* include:
 
 The *quick-fasd* Emacs package [James Cherti](https://www.jamescherti.com/) and is distributed under terms of the GNU General Public License version 3, or, at your choice, any later version. It is based on the fasd package, originally written by Steckerhalter.
 
-Copyright (C) 2024-2025 James Cherti
+Copyright (C) 2024-2026 James Cherti
 
 Copyright (C) 2013-2021 Steckerhalter
 
