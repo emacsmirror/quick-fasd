@@ -27,7 +27,6 @@ If this package improves the workflow, consider supporting the project by **⭐ 
 
 ```emacs-lisp
 (use-package quick-fasd
-  :ensure t
   :bind (("C-x C-d" . quick-fasd-find-path)
          :map minibuffer-local-completion-map
          ("C-x C-d" . quick-fasd-find-path))
