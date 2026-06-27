@@ -120,6 +120,9 @@ path."
 
 (defvar quick-fasd--internal-executable nil)
 
+(defvar quick-fasd--inhibit-auto-add nil
+  "Non-nil prevents recursive calls to Fasd update hooks.")
+
 (defun quick-fasd--get-fasd-executable-path ()
   "Return the path to the `fasd` executable or signal an error if not found."
   (unless quick-fasd--internal-executable
@@ -161,11 +164,12 @@ PREFIX is the same prefix as `quick-fasd-find-path'."
            (results
             ;; TODO Use an alternative such as process-line
             (split-string
-             (shell-command-to-string
-              (format "%s -l -R%s %s"
-                      (shell-quote-argument fasd-executable)
-                      fasd-args
-                      query))
+             (let ((default-directory temporary-file-directory))
+               (shell-command-to-string
+                (format "%s -l -R%s %s"
+                        (shell-quote-argument fasd-executable)
+                        fasd-args
+                        query)))
              "\n" t))
            (file (when results
                    (setq this-command 'quick-fasd-find-path)
@@ -176,11 +180,21 @@ PREFIX is the same prefix as `quick-fasd-find-path'."
 
 (defun quick-fasd--hook-add-path-to-db ()
   "Add current file or directory to the Fasd database."
-  (let ((path (if (derived-mode-p 'dired-mode)
-                  dired-directory
-                (buffer-file-name (buffer-base-buffer)))))
-    (when (and path (stringp path))
-      (quick-fasd-add-path path))))
+  (unless quick-fasd--inhibit-auto-add
+    (let* ((quick-fasd--inhibit-auto-add t)
+           (raw-path (if (derived-mode-p 'dired-mode)
+                         dired-directory
+                       (buffer-file-name (buffer-base-buffer))))
+           ;; In Emacs, the buffer-local variable dired-directory does not
+           ;; always evaluate to a plain string. Depending on how the Dired
+           ;; buffer was created, it can take two formats: a string or a cons
+           ;; cell.
+           (path (if (stringp raw-path)
+                     raw-path
+                   (car raw-path))))
+      (when (and path
+                 (stringp path))
+        (quick-fasd-add-path path)))))
 
 (defun quick-fasd--maybe-add-path-on-buffer-change (&optional object)
   "Add current buffer's file or directory to Fasd if enabled.
@@ -236,27 +250,29 @@ directories."
 ;;;###autoload
 (defun quick-fasd-delete-path (path)
   "Delete PATH from the Fasd database."
-  (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
-    (when (and path
-               (stringp path))
-      (start-process "*fasd*" nil fasd-executable "-D"
-                     ;; This expands PATH to an absolute form using
-                     ;; `expand-file-name'. Normalization ensures uniform
-                     ;; entries and avoids inconsistencies or duplicates.
-                     (expand-file-name path)))))
+  (when (and path
+             (stringp path)
+             (not (file-remote-p path)))
+    ;; Expand path (`expanded-path') before setting `default-directory' to avoid
+    ;; resolving it against `temporary-file-directory'.
+    (let ((expanded-path (expand-file-name path))
+          (fasd-executable (quick-fasd--get-fasd-executable-path))
+          (default-directory temporary-file-directory))
+      (start-process "*fasd*" nil fasd-executable "-D" expanded-path))))
 
 ;;;###autoload
 (defun quick-fasd-add-path (path)
   "Add PATH to the Fasd database."
-  (let ((fasd-executable (quick-fasd--get-fasd-executable-path)))
-    (when (and path
-               (stringp path)
-               (file-readable-p path))
-      (start-process "*fasd*" nil fasd-executable "--add"
-                     ;; This expands PATH to an absolute form using
-                     ;; `expand-file-name'. Normalization ensures uniform
-                     ;; entries and avoids inconsistencies or duplicates.
-                     (expand-file-name path)))))
+  (when (and path
+             (stringp path)
+             (not (file-remote-p path))
+             (file-readable-p path))
+    ;; Expand path (`expanded-path') before setting `default-directory' to avoid
+    ;; resolving it against `temporary-file-directory'.
+    (let* ((expanded-path (expand-file-name path))
+           (fasd-executable (quick-fasd--get-fasd-executable-path))
+           (default-directory temporary-file-directory))
+      (start-process "*fasd*" nil fasd-executable "--add" expanded-path))))
 
 ;;;###autoload
 (define-minor-mode quick-fasd-mode
