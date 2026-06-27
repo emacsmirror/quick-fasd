@@ -285,12 +285,26 @@ directories."
       (progn
         (add-hook 'find-file-hook #'quick-fasd--hook-add-path-to-db)
         (add-hook 'dired-mode-hook #'quick-fasd--hook-add-path-to-db)
-        (add-hook 'window-buffer-change-functions
-                  #'quick-fasd--maybe-add-path-on-buffer-change))
+        ;; Handle backward compatibility for Emacs 25.1. The hook
+        ;; window-buffer-change-functions was introduced in Emacs 27.1. Since
+        ;; the package targets Emacs 25.1, this hook will be ignored by older
+        ;; Emacs versions.
+        (if (boundp 'window-buffer-change-functions)
+            (add-hook 'window-buffer-change-functions
+                      #'quick-fasd--maybe-add-path-on-buffer-change)
+          (add-hook 'window-configuration-change-hook
+                    #'quick-fasd--maybe-add-path-on-buffer-change)))
     (remove-hook 'find-file-hook #'quick-fasd--hook-add-path-to-db)
     (remove-hook 'dired-mode-hook #'quick-fasd--hook-add-path-to-db)
-    (remove-hook 'window-buffer-change-functions
-                 #'quick-fasd--maybe-add-path-on-buffer-change)))
+    ;; Handle backward compatibility for Emacs 25.1. The hook
+    ;; window-buffer-change-functions was introduced in Emacs 27.1. Since the
+    ;; package targets Emacs 25.1, this hook will be ignored by older Emacs
+    ;; versions.
+    (if (boundp 'window-buffer-change-functions)
+        (remove-hook 'window-buffer-change-functions
+                     #'quick-fasd--maybe-add-path-on-buffer-change)
+      (remove-hook 'window-configuration-change-hook
+                   #'quick-fasd--maybe-add-path-on-buffer-change))))
 
 ;;; Provide
 
