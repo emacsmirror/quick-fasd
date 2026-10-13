@@ -155,7 +155,7 @@ This program is free software: you can redistribute it and/or modify it under th
 
 An `fasd` fork, from the same author:
 
-- [efasd](https://github.com/jamescherti/efasd): A fasd fork that is optimized for faster shell prompt speed.
+- [efasd](https://github.com/jamescherti/efasd): An fasd fork that is optimized for faster shell prompt speed.
 
 Other Emacs packages by the same author:
 
