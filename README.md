@@ -153,6 +153,10 @@ This program is free software: you can redistribute it and/or modify it under th
 - [quick-fasd.el @GitHub](https://github.com/jamescherti/quick-fasd.el)
 - [quick-fasd.el @MELPA](https://melpa.org/#/quick-fasd)
 
+An `fasd` fork, from the same author:
+
+- **[efasd](https://github.com/jamescherti/efasd)**: A fasd fork that is optimized for faster shell prompt speed.
+
 Other Emacs packages by the same author:
 
 - [compile-angel.el](https://github.com/jamescherti/compile-angel.el): **Speed up Emacs!** This package guarantees that all .el files are both byte-compiled and native-compiled, which significantly speeds up Emacs.
